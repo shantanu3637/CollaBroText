@@ -1,5 +1,6 @@
 import sublime, sublime_plugin
 import json
+import pprint
 
 
 
@@ -27,7 +28,7 @@ class Comment():
 class ThreadEncoder(json.JSONEncoder):
 	def default(self, obj):
 		if isinstance(obj, Thread):
-			return {"thread_key":obj.thread_key, "region":obj.region, "is_resolved":obj.is_resolved, "list_of_comments":CommentEncoder().encode(obj.list_of_comments)}#json.dumps(obj.list_of_comments, cls=CommentEncoder)}
+			return {"is_resolved":obj.is_resolved, "thread_key":obj.thread_key, "region":obj.region, "list_of_comments":json.dumps(obj.list_of_comments, cls=CommentEncoder)}#CommentEncoder().encode(obj.list_of_comments)}
 		return json.JSONEncoder.default(self, obj)
 
 class CommentEncoder(json.JSONEncoder):
@@ -42,5 +43,16 @@ class IsitworkingCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		c = Comment(123, 'First Comment')
 		d = Comment(456, 'Second Comment')
-		t = Thread('12thread', 3, [c, d])
+		t = Thread('12thread', 3, [c,d])
 		t.write_to_file()
+		with open('/home/aaron/data.json', 'r') as f:
+			data = json.load(f)
+		print(data)
+		s = data['list_of_comments']
+		print(s)
+		jdata = json.loads(s)
+		print(jdata[0]['comment_key'])
+		data['list_of_comments'] = jdata
+		print(data['list_of_comments'][0])
+		print(data['list_of_comments'][0]['comment_key'])
+		#print(json.dumps(data['list_of_comments'], indent=4, sort_keys=True))
