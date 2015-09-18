@@ -15,7 +15,7 @@ class Thread():
 
 	def write_to_file(self):
 		data = {'a':str(self.thread_key), 'b':2}
-		with open('/home/aaron/data.json', 'w') as f:
+		with open('/home/shantanu/Desktop/datastructurework/changemaker.json', 'w') as f:
 			json.dump(self, f, cls=ThreadEncoder)
 
 class Comment():
@@ -38,7 +38,7 @@ class CommentEncoder(json.JSONEncoder):
 
 
 
-class ExampleCommand(sublime_plugin.TextCommand):
+class IsitworkingCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		c = Comment(123, 'First Comment')
 		d = Comment(456, 'Second Comment')

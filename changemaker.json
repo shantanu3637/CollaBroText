@@ -1,0 +1,6 @@
+{
+ "list_of_comments": "[{\"comment_key\": 123, \"comment_string\": \"First Comment\"}, {\"comment_key\": 456, \"comment_string\": \"Second Comment\"}]", 
+ "thread_key": "12thread", 
+ "is_resolved": false, 
+ "region": 3
+}
