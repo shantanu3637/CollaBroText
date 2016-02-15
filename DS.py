@@ -1,4 +1,3 @@
-
 import  sublime,sublime_plugin, json, uuid
 
 list_of_threads = []
@@ -8,7 +7,7 @@ new_list_of_threads = []
 class Thread:
 
 	def __init__(self, region, list_of_comments, is_resolved = False):
-		self.thread_key = str(uuid.uuid4())
+		self.thread_key = uuid.uuid4()
 		#print(list(region))
 		getting_region = list(region.split(','))
 		#print(getting_region)
@@ -53,7 +52,7 @@ class Thread:
 	@staticmethod
 	def converting_from_file_to_new_list_of_threads(pnew_list_of_threads):
 		# print(pnew_list_of_threads)
-		pnewer_list_of_threads = [Thread( x["region"], x["list_of_comments"], x["is_resolved"]) for x in pnew_list_of_threads]
+		pnewer_list_of_threads = [Thread(x["thread_key"], x["region"], x["list_of_comments"], x["is_resolved"]) for x in pnew_list_of_threads]
 		return pnewer_list_of_threads
 
 
@@ -101,7 +100,7 @@ class Comment:
 	
 	def __init__(self, username, comment_string, timestamp):
 		self.username = username
-		self.comment_key = str(uuid.uuid4())
+		self.comment_key = uuid.uuid4()
 		self.comment_string = comment_string
 		self.timestamp = timestamp
 
@@ -139,87 +138,33 @@ class CommentEncoder(json.JSONEncoder):
 
 
 
+c = Comment('mr3','third Comment', 7)
+d = Comment('mr4', '4th Comment', 8)
+t = Thread( "17,18", [c, d])
+u = Thread( "19,20", [c, d])
+v = Thread( "21,22", [c, d])
+w = Thread( "0,0",[c, d])
+
+e = Comment('mr7', 'another comment', 11)
+
+t.add_thread(list_of_threads)
+# print(list_of_threads)
+u.add_thread(list_of_threads)
+# print(list_of_threads)
+v.add_thread(list_of_threads)
+# print(list_of_threads)
+
+v.add_comment(e)
 
 
-class WritetestCommand(sublime_plugin.TextCommand):
-	def run(self, edit):
-		# c = Comment('mr3',123456, 'third Comment', 7)
-		# d = Comment('mr4',456789, '4th Comment', 8)
-		# t = Thread(16, "17,18", [c, d])
-		# u = Thread(18, "19,20", [c, d])
-		# v = Thread(20, "21,22", [c, d])
-		# w = Thread(21,"0,0",[c, d])
+# t.highlighter(self.view)
+# u.highlighter(self.view)
+# v.highlighter(self.view)
 
-		# e = Comment('mr7',123456712321,'another comment', 11)
+# w.region = w.highlighter(self.view)
 
-		# t.add_thread(list_of_threads)
-		# # print(list_of_threads)
-		# u.add_thread(list_of_threads)
-		# # print(list_of_threads)
-		# v.add_thread(list_of_threads)
-		# # print(list_of_threads)
+Thread.write_list_threads(list_of_threads)
+yo = Thread.read_thread()
+new_list_of_threads = Thread.converting_from_file_to_new_list_of_threads(yo)
 
-		# v.add_comment(e)
-
-
-		# # t.highlighter(self.view)
-		# # u.highlighter(self.view)
-		# # v.highlighter(self.view)
-
-		# # w.region = w.highlighter(self.view)
-
-		# Thread.write_list_threads(list_of_threads)
-		# yo = Thread.read_thread()
-		# new_list_of_threads = Thread.converting_from_file_to_new_list_of_threads(yo)
-
-		# print(new_list_of_threads)
-
-
-
-		# # t.create_list_threads()
-		# # t.write_thread()
-
-		# # newobj = Thread('','',[])
-		# # newobj.read_thread()
-		# # print(newobj.list_of_comments)
-
-
-
-
-
-
-
-
-
-		c = Comment('mr3','third Comment', 7)
-		d = Comment('mr4', '4th Comment', 8)
-		t = Thread( "17,18", [c, d])
-		u = Thread( "19,20", [c, d])
-		v = Thread( "21,22", [c, d])
-		w = Thread( "0,0",[c, d])
-
-		e = Comment('mr7', 'another comment', 11)
-
-		t.add_thread(list_of_threads)
-		# print(list_of_threads)
-		u.add_thread(list_of_threads)
-		# print(list_of_threads)
-		v.add_thread(list_of_threads)
-		# print(list_of_threads)
-
-		v.add_comment(e)
-
-
-		# t.highlighter(self.view)
-		# u.highlighter(self.view)
-		# v.highlighter(self.view)
-
-		# w.region = w.highlighter(self.view)
-
-		Thread.write_list_threads(list_of_threads)
-		yo = Thread.read_thread()
-		new_list_of_threads = Thread.converting_from_file_to_new_list_of_threads(yo)
-
-		print(new_list_of_threads)
-
-
+print(new_list_of_threads)
