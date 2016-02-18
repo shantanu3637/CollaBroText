@@ -1,5 +1,7 @@
 
-import  sublime,sublime_plugin, json, uuid
+
+import  sublime,sublime_plugin, json, uuid, subprocess
+from datetime import datetime
 
 list_of_threads = []
 new_list_of_threads = []
@@ -7,7 +9,7 @@ new_list_of_threads = []
 
 class Thread:
 
-	def __init__(self, region, list_of_comments, is_resolved = False):
+	def __init__(self, region, comment_string = None,list_of_comments = [], is_resolved = False):
 		self.thread_key = str(uuid.uuid4())
 		#print(list(region))
 		getting_region = list(region.split(','))
@@ -15,8 +17,16 @@ class Thread:
 
 		self.region = sublime.Region(int(getting_region[0]),int(getting_region[1]))
 		self.is_resolved = is_resolved
-		self.list_of_comments = list_of_comments
-		#write_thread()
+
+
+
+		if (comment_string == None):
+			self.list_of_comments = list_of_comments
+		else:
+			cobj = Comment(comment_string)
+			list_of_comments.append(cobj)
+			self.list_of_comments = list_of_comments
+			#write_thread()
 
 
 	def find_thread(region):
@@ -53,7 +63,7 @@ class Thread:
 	@staticmethod
 	def converting_from_file_to_new_list_of_threads(pnew_list_of_threads):
 		# print(pnew_list_of_threads)
-		pnewer_list_of_threads = [Thread( x["region"], x["list_of_comments"], x["is_resolved"]) for x in pnew_list_of_threads]
+		pnewer_list_of_threads = [Thread( x["region"], list_of_comments = x["list_of_comments"], is_resolved = x["is_resolved"]) for x in pnew_list_of_threads]
 		return pnewer_list_of_threads
 
 
@@ -68,8 +78,9 @@ class Thread:
 		plist_of_threads.append(self)
 
 
-	def add_comment(self, comment_obj):
-		self.list_of_comments.append(comment_obj)
+	def add_comment(self, comment_string):
+		cobj = Comment(comment_string)
+		self.list_of_comments.append(cobj)
 
 
 
@@ -99,11 +110,17 @@ class Thread:
 
 class Comment:
 	
-	def __init__(self, username, comment_string, timestamp):
-		self.username = username
+	def __init__(self, comment_string):
+		
+		git_uname = subprocess.Popen("git config user.name", shell=True, stdout=subprocess.PIPE).stdout.read()
+		self.username = git_uname.decode("utf-8")
+		
 		self.comment_key = str(uuid.uuid4())
+
 		self.comment_string = comment_string
-		self.timestamp = timestamp
+
+		timestamp_string = str(datetime.now())
+		self.timestamp = timestamp_string[0:timestamp_string.rfind(".")]
 
 
 
@@ -191,35 +208,53 @@ class WritetestCommand(sublime_plugin.TextCommand):
 
 
 
-		c = Comment('mr3','third Comment', 7)
-		d = Comment('mr4', '4th Comment', 8)
-		t = Thread( "17,18", [c, d])
-		u = Thread( "19,20", [c, d])
-		v = Thread( "21,22", [c, d])
-		w = Thread( "0,0",[c, d])
+		# c = Comment('mr3','third Comment', 7)
+		# d = Comment('mr4', '4th Comment', 8)
+		# t = Thread( "17,18", [c, d])
+		# u = Thread( "19,20", [c, d])
+		# v = Thread( "21,22", [c, d])
+		# w = Thread( "0,0",[c, d])
 
-		e = Comment('mr7', 'another comment', 11)
+		# e = Comment('mr7', 'another comment', 11)
+
+		# t.add_thread(list_of_threads)
+		# # print(list_of_threads)
+		# u.add_thread(list_of_threads)
+		# # print(list_of_threads)
+		# v.add_thread(list_of_threads)
+		# # print(list_of_threads)
+
+		# v.add_comment(e)
+
+
+		# # t.highlighter(self.view)
+		# # u.highlighter(self.view)
+		# # v.highlighter(self.view)
+
+		# # w.region = w.highlighter(self.view)
+
+		# Thread.write_list_threads(list_of_threads)
+		# yo = Thread.read_thread()
+		# new_list_of_threads = Thread.converting_from_file_to_new_list_of_threads(yo)
+
+		# print(new_list_of_threads)
+
+
+
+		t = Thread( "17,18", "This is a first comment")
 
 		t.add_thread(list_of_threads)
-		# print(list_of_threads)
-		u.add_thread(list_of_threads)
-		# print(list_of_threads)
-		v.add_thread(list_of_threads)
-		# print(list_of_threads)
+		t.add_comment("second comment")
 
-		v.add_comment(e)
-
-
-		# t.highlighter(self.view)
-		# u.highlighter(self.view)
-		# v.highlighter(self.view)
-
-		# w.region = w.highlighter(self.view)
 
 		Thread.write_list_threads(list_of_threads)
 		yo = Thread.read_thread()
 		new_list_of_threads = Thread.converting_from_file_to_new_list_of_threads(yo)
 
 		print(new_list_of_threads)
+
+
+
+
 
 
