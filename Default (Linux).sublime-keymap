@@ -1,0 +1,7 @@
+[
+  
+ { "keys": ["ctrl+shift+3"], "command": "add_region"}, 
+ 
+{ "keys": ["ctrl+shift+4"], "command": "close_view"}
+
+]
