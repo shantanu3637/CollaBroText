@@ -1,9 +1,10 @@
 import sublime, sublime_plugin
 from .datastructure_plugin import *
-global global_id 
-global_id = 'a'
+global layout_flag 
+global layout_region
 
-#fuck u counter
+layout_flag = 0
+layout_region = "0"
 
 #class used to add the highlighted region to the file 
 class AddRegionCommand(sublime_plugin.TextCommand):
@@ -21,10 +22,11 @@ class AddRegionCommand(sublime_plugin.TextCommand):
 
 class HighlightChange(sublime_plugin.EventListener):
 	def on_selection_modified(self,view):
-		global window
-		global globa_id
+		global layout_flag
+		global layout_region
+		global comment
 		window = sublime.active_window()
-		UUID = ['x']
+		UUID = ['x', 'y']
 
 		for id in UUID:
 			region1 = view.get_regions(id)
@@ -36,12 +38,18 @@ class HighlightChange(sublime_plugin.EventListener):
 				if region2[0].contains(region):
 					view.add_regions(id, region2, 'string', 'dot', sublime.HIDE_ON_MINIMAP)
 
-					
-					command_name = "set_layout"
-					command_arguments = { "cols": [0, 0.72, 1.0],"rows": [0.0,1.0],"cells": [ [0, 0, 1, 1], [1,0,2,1] ]	}
-					window.run_command(command_name, command_arguments)
-					
-					if global_id != id :
+					if layout_region != id and layout_region != "0":
+						window.run_command("close_view")
+
+
+					if layout_flag == 0 :
+
+						layout_flag = 1
+						layout_region = id
+						comment = id
+						command_name = "set_layout"
+						command_arguments = { "cols": [0, 0.72, 1.0],"rows": [0.0,1.0],"cells": [ [0, 0, 1, 1], [1,0,2,1] ]	}
+						window.run_command(command_name, command_arguments)
 						window.run_command("display_user_input")
 
 
@@ -51,22 +59,26 @@ class HighlightChange(sublime_plugin.EventListener):
 class DisplayUserInputCommand(sublime_plugin.TextCommand):
 	def run(self,edit):
 
-		global window
 		global comment_view_obj
-		comment = "testing" 
+		global comment
+
+		comment_view_obj = self.view
+		comment = "testing for : " + comment 
 		#window.focus_view(comment_view_obj)
 		self.view.insert(edit, 0, comment)
 		self.view.set_scratch(True)
+		self.view.set_read_only(True)
 
 class CloseViewCommand(sublime_plugin.WindowCommand):
 	def run(self):
 
-		global window 
 		global comment_view_obj
-		window.focus_view(comment_view_obj)
-		window.run_command("close_file")
+		global layout_flag
+		layout_flag = 0
+		self.window.focus_view(comment_view_obj)
+		self.window.run_command("close_file")
 
 		command_name = "set_layout"
 		command_arguments = { "cols": [0, 1.0],"rows": [0.0,1.0],"cells": [ [0, 0, 1, 1], ] }
-		window.run_command(command_name, command_arguments)	
+		self.window.run_command(command_name, command_arguments)	
 	
