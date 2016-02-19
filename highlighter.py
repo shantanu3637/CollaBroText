@@ -13,7 +13,7 @@ class AddRegionCommand(sublime_plugin.TextCommand):
 		for region in self.view.sel():
 			
 			self.view.add_regions('x', [region], 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
-			print("done")
+			#print("done")
 
 # class printer(sublime_plugin.EventListener):
 # 	def on_selection_modified(self,view):
@@ -25,12 +25,16 @@ class HighlightChange(sublime_plugin.EventListener):
 		global layout_flag
 		global layout_region
 		global comment
+
 		window = sublime.active_window()
 		UUID = ['x', 'y']
+		current_view_obj = view
 
 		for id in UUID:
-			region1 = view.get_regions(id)
-			view.add_regions(id, region1, 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
+			if layout_region != id and layout_region != "0":
+
+				region1 = view.get_regions(id)
+				view.add_regions(id, region1, 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
 
 		for id in UUID:
 			region2 = view.get_regions(id)
@@ -51,6 +55,12 @@ class HighlightChange(sublime_plugin.EventListener):
 						command_arguments = { "cols": [0, 0.72, 1.0],"rows": [0.0,1.0],"cells": [ [0, 0, 1, 1], [1,0,2,1] ]	}
 						window.run_command(command_name, command_arguments)
 						window.run_command("display_user_input")
+		window.focus_view(current_view_obj)
+		for id in UUID:
+			if layout_region != id and layout_region != "0":
+
+				region1 = view.get_regions(id)
+				view.add_regions(id, region1, 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
 
 
 
@@ -74,7 +84,9 @@ class CloseViewCommand(sublime_plugin.WindowCommand):
 
 		global comment_view_obj
 		global layout_flag
+		global layout_region
 		layout_flag = 0
+		layout_region = "0"
 		self.window.focus_view(comment_view_obj)
 		self.window.run_command("close_file")
 
