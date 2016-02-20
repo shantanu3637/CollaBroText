@@ -138,7 +138,7 @@ class WritetestCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		
 
-		t = Thread( "17,18", "This is a first comment")
+		t = Thread( "17,18",  comment_string = "This is a first comment", list_of_comments =[])
 
 		t.add_thread(list_of_threads)
 		t.add_comment("second comment")
