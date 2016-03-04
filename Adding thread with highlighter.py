@@ -1,11 +1,11 @@
 import sublime, sublime_plugin
-from .datastructureplugin import *
+from .datastructure_plugin import *
 
 global layout_flag 
 global layout_region
 
 layout_flag = False
-layout_region = None
+layout_region = "0"
 
 list_of_threads = []
 
@@ -23,13 +23,14 @@ class PrintTestCommand(sublime_plugin.TextCommand):
 class CreateNewThreadCommand(sublime_plugin.TextCommand):
 
 	def run(self,edit):
-		global comment_view_obj
-		comment_view_obj = self.view
+		# global comment_view_obj
+		# comment_view_obj = self.view
 		self.view.window().show_input_panel("Enter your comment:", '', self.on_done, None, None)
 		#sublime.set_timeout(self.close_view,1000)
 
 	def on_done(self, user_input):
 		global comment,window
+
 		comment = str(user_input)
 		tobj = Thread("17,18", comment_string = comment, list_of_comments = [])
 		for region in self.view.sel():
@@ -81,7 +82,7 @@ class HighlightChange(sublime_plugin.EventListener):
 				view.add_regions(x.thread_key, region2, 'string', 'dot', sublime.HIDE_ON_MINIMAP)
 
 				if layout_region != x.thread_key :
-					if layout_region != None :
+					if layout_region != "0" :
 						window.run_command("close_layout")
 
 
@@ -89,7 +90,7 @@ class HighlightChange(sublime_plugin.EventListener):
 
 					layout_flag = True
 					layout_region = x.thread_key
-					comment = x.comment_string
+					comment = x.thread_key
 					command_name = "set_layout"
 					command_arguments = { "cols": [0, 0.72, 1.0],"rows": [0.0,1.0],"cells": [ [0, 0, 1, 1], [1,0,2,1] ]	}
 					window.run_command(command_name, command_arguments)
@@ -112,6 +113,7 @@ class DisplayUserInputCommand(sublime_plugin.TextCommand):
 		global comment_view_obj
 
 		comment_view_obj = self.view
+
 		comment = "testing for : " + comment 
 		#window.focus_view(comment_view_obj)
 		self.view.insert(edit, 0, comment)
@@ -126,6 +128,7 @@ class CloseLayoutCommand(sublime_plugin.WindowCommand):
 		global layout_region
 		layout_flag = False
 		layout_region = "0"
+		
 		self.window.focus_view(comment_view_obj)
 		self.window.run_command("close_file")
 
