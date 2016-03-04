@@ -14,9 +14,11 @@ class Thread:
 	def __init__(self, region, comment_string = None,list_of_comments = [], is_resolved = False):
 		self.thread_key = str(uuid.uuid4())
 
-		#region changing from string to sublime region object
-		getting_region = list(region.split(','))
-		self.region = sublime.Region(int(getting_region[0]),int(getting_region[1]))
+		# #region changing from string to sublime region object
+		# getting_region = list(region.split(','))
+		# self.region = sublime.Region(int(getting_region[0]),int(getting_region[1]))
+
+		self.region = region
 
 		self.is_resolved = is_resolved
 
@@ -45,7 +47,7 @@ class Thread:
 
 
 	#Reading thread from file
-	@staticmethod
+	@staticmethod #TODO
 	def read_thread():
 		with open('/home/shantanu/Desktop/datastructurework/datafile.json', 'r') as fl:
 			new_list_of_threads = json.load(fl)
@@ -55,8 +57,17 @@ class Thread:
 	#Coverting JSON data from string back to Thread and Comment Class objects
 	@staticmethod
 	def converting_from_file_to_new_list_of_threads(pnew_list_of_threads):
-		pnewer_list_of_threads = [Thread( x["region"], list_of_comments = [ Comment(y["comment_string"],y["comment_key"],y["username"],y["timestamp"]) for y in x["list_of_comments"] ] , is_resolved = x["is_resolved"]) for x in pnew_list_of_threads]
+
+		# pnewer_list_of_threads = [Thread( x["region"], list_of_comments = [ Comment(y["comment_string"],y["comment_key"],y["username"],y["timestamp"]) for y in x["list_of_comments"] ] , is_resolved = x["is_resolved"]) for x in pnew_list_of_threads]
+		
+
+		pnewer_list_of_threads = [Thread( sublime.Region(int(list(x["region"].split(','))[0]),int(list(x["region"].split(','))[1])), 
+			list_of_comments = [ Comment(y["comment_string"],y["comment_key"],y["username"],y["timestamp"]) for y in x["list_of_comments"] ], 
+			is_resolved = x["is_resolved"]) for x in pnew_list_of_threads]
 		return pnewer_list_of_threads
+
+
+		# return pnewer_list_of_threads
 
 
 	#add thread to list of thread objects
@@ -136,9 +147,10 @@ class CommentEncoder(json.JSONEncoder):
 
 class WritetestCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
-		
 
-		t = Thread( "17,18", "This is a first comment")
+		reg1 = sublime.Region(12,45)
+
+		t = Thread( reg1,  comment_string = "This is a first comment", list_of_comments = [])
 
 		t.add_thread(list_of_threads)
 		t.add_comment("second comment")
