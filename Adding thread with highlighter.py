@@ -126,7 +126,7 @@ class CloseLayoutCommand(sublime_plugin.WindowCommand):
 		global comment_view_obj
 		global layout_flag
 		global layout_region
-		layout_flag = False
+		layout_flag = False 
 		layout_region = "0"
 		
 		self.window.focus_view(comment_view_obj)
