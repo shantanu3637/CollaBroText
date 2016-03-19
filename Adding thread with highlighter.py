@@ -32,6 +32,7 @@ class CreateNewThreadCommand(sublime_plugin.TextCommand):
 		global comment,window
 
 		comment = str(user_input)
+		#use view.sel to get the start and end of the currently selected region to be able to pass to DS (replace 17, 18)
 		tobj = Thread("17,18", comment_string = comment, list_of_comments = [])
 		for region in self.view.sel():
 			self.view.add_regions(tobj.thread_key, [region], 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
@@ -60,8 +61,8 @@ class CreateNewThreadCommand(sublime_plugin.TextCommand):
 # NEED TO FIX HIGHLIGHT AFTER CLOSING LAYOUT 
 class HighlightChange(sublime_plugin.EventListener):
 	def on_selection_modified_async(self,view):
-		global layout_flag
-		global layout_region
+		global layout_flag			#boolean which tells if layout(UI) is on or off (open or not) 
+		global layout_region		# if the layout is open, tells you which region it corresponds to 
 
 		#need window obj to call other commands
 		window = sublime.active_window()
@@ -75,8 +76,10 @@ class HighlightChange(sublime_plugin.EventListener):
 		# 		view.add_regions(id, region1, 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
 
 		#if current cursor position is contained in a region in file and no layout is open then open layout 
+		
+		#list_of_threads contains a list of objects of the thread class
 		for x in list_of_threads:
-			region2 = view.get_regions(x.thread_key)
+			region2 = view.get_regions(x.thread_key)		#thread_key gives the UUID
 			region = view.sel()
 			if region2[0].contains(region[0]):
 				view.add_regions(x.thread_key, region2, 'string', 'dot', sublime.HIDE_ON_MINIMAP)
