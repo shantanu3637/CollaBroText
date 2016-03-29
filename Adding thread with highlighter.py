@@ -4,6 +4,8 @@ from .datastructure_plugin import *
 global layout_flag
 global layout_region
 
+
+
 layout_flag = False
 layout_region = "0"
 
@@ -20,7 +22,10 @@ class PrintTestCommand(sublime_plugin.TextCommand):
 			print (x.list_of_comments[0].comment_string)
 
 
-class CreateNewThreadCommand(sublime_plugin.TextCommand):
+class AddThreadCommentCommand(sublime_plugin.TextCommand):
+
+
+
 
 	def run(self,edit):
 		global current_editing_file
@@ -29,11 +34,12 @@ class CreateNewThreadCommand(sublime_plugin.TextCommand):
 		self.view.window().show_input_panel("Enter your comment:", 'hi test comment', self.on_done, None, None)
 		#sublime.set_timeout(self.close_view,1000)
 
-	def on_done(self, user_input):
+
+	def add_new_thread(self, puser_input):
+
 		global comment,window
 
-		comment = str(user_input)
-		#use view.sel to get the start and end of the currently selected region to be able to pass to DS (replace 17, 18)
+		comment = str(puser_input)
 
 
 		tobj = Thread(self.view.sel()[0], comment_string = comment, list_of_comments = [])
@@ -42,6 +48,53 @@ class CreateNewThreadCommand(sublime_plugin.TextCommand):
 		tobj.add_thread(list_of_threads)
 
 		print(list_of_threads[0].list_of_comments[0].comment_string)
+
+
+	def add_new_comment(self, puser_input):
+
+		comment = str(puser_input)
+
+
+		for x in list_of_threads:
+			if (x.thread_key == layout_region):
+				
+				x.add_comment(comment)
+
+
+
+	def on_done(self, user_input):
+
+		# comment = str(user_input)
+		# print comment
+
+		in_highlight = False
+
+
+		# add_new_thread(comment)
+		global current_editing_file
+
+
+		for thread_object in list_of_threads:
+			region2 = current_editing_file.get_regions(thread_object.thread_key)		#thread_key gives the UUID
+			region = current_editing_file.sel()
+			if region2[0].contains(region[0]):
+				in_highlight = True
+
+
+
+
+		if in_highlight == False:
+			self.add_new_thread(user_input)
+		else:
+			self.add_new_comment(user_input)
+
+
+
+
+
+		
+		
+
 
 
 # class AddNewComment(sublime_plugin.TextCommand):
@@ -54,6 +107,58 @@ class CreateNewThreadCommand(sublime_plugin.TextCommand):
 
 
 # class ThreadObjectCreation()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -114,6 +219,7 @@ class HighlightChange(sublime_plugin.EventListener):
 
 
 
+
 		#fixed the dual highlight problem
 		for thread_object in list_of_threads:
 			if layout_region != thread_object.thread_key:
@@ -132,7 +238,10 @@ class DisplayUserInputCommand(sublime_plugin.TextCommand):
 
 		current_thread = list_of_threads[selected_thread_object]
 		sum_of_chars = 0
-		for comment in current_thread.list_of_comments:
+		com_list= current_thread.list_of_comments
+		com_list.reverse()
+
+		for comment in com_list:
 			#self.view.insert(edit, 0, "comment")
 			sum_of_chars = self.view.insert(edit, sum_of_chars, "\n"+comment.comment_string)
 			self.view.insert(edit, 0, "\n\n\n@"+comment.username + "\t" + comment.timestamp)

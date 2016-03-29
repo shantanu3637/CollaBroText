@@ -6,6 +6,6 @@
 
 { "keys": ["ctrl+shift+5"], "command": "add_region"},
 
-{ "keys": ["ctrl+shift+6"], "command": "add_thread_comment"}
+{ "keys": ["ctrl+shift+6"], "command": "create_new_thread"}
 
 ]
