@@ -1,12 +1,12 @@
 import sublime, sublime_plugin
 from .datastructure_plugin import *
 
-global layout_flag
+#global layout_flag
 global layout_region
 
 
 
-layout_flag = False
+#layout_flag = False
 layout_region = "0"
 
 list_of_threads = []
@@ -47,7 +47,7 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
 			self.view.add_regions(tobj.thread_key, [region], 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
 		tobj.add_thread(list_of_threads)
 
-		print(list_of_threads[0].list_of_comments[0].comment_string)
+		#print(list_of_threads[0].list_of_comments[0].comment_string)
 
 
 	def add_new_comment(self, puser_input):
@@ -91,12 +91,6 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
 
 
 
-
-		
-		
-
-
-
 # class AddNewComment(sublime_plugin.TextCommand):
 	#TODO add comment modue from google keep
 
@@ -109,94 +103,30 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
 # class ThreadObjectCreation()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Command runs when cursor position is changed. Displays comments corresponding to the region in file
 # NEED TO FIX HIGHLIGHT AFTER CLOSING LAYOUT
 class HighlightChange(sublime_plugin.EventListener):
-	def on_selection_modified_async(self,view):
-		global layout_flag			#boolean which tells if layout(UI) is on or off (open or not)
+	def on_selection_modified(self,view):
+		#global layout_flag			#boolean which tells if layout(UI) is on or off (open or not)
 		global layout_region		# if the layout is open, tells you which region it corresponds to
 		global current_editing_file
 
-		print(layout_flag)
+		#print(layout_flag)
 		#need window obj to call other commands
 		window = sublime.active_window()
 		#current_view_obj = current_editing_file
 
-		#change color of all regions to 'comment' ignoring the region currently open
-		# for id in Ux:
-		# 	if layout_region != id or layout_region == "0":
-
-		# 		region1 = view.get_regions(id)
-		# 		view.add_regions(id, region1, 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
-
 		#if current cursor position is contained in a region in file and no layout is open then open layout
-
 		#list_of_threads contains a list of objects of the thread class
 
 		for thread_object in list_of_threads:
 
 			region2 = current_editing_file.get_regions(thread_object.thread_key)		#thread_key gives the UUID
 			region = current_editing_file.sel()
-			print(current_editing_file.id())
-			print(view.id())
-			print(thread_object.thread_key)
-			print(region2)
+			# print(current_editing_file.id())
+			# print(view.id())
+			# print(thread_object.thread_key)
+			# print(region2)
 			if region2[0].contains(region[0]):
 				thread_index = list_of_threads.index(thread_object)
 				current_editing_file.add_regions(thread_object.thread_key, region2, 'string', 'dot', sublime.HIDE_ON_MINIMAP)
@@ -206,9 +136,9 @@ class HighlightChange(sublime_plugin.EventListener):
 						window.run_command("close_layout")
 
 
-				if layout_flag == False :
+				if layout_region == "0" :
 
-					layout_flag = True
+					#layout_flag = True
 					layout_region = thread_object.thread_key
 					#thread_uuid = thread_object.thread_key
 					command_name = "set_layout"
@@ -243,7 +173,8 @@ class DisplayUserInputCommand(sublime_plugin.TextCommand):
 
 		for comment in com_list:
 			#self.view.insert(edit, 0, "comment")
-			sum_of_chars = self.view.insert(edit, sum_of_chars, "\n"+comment.comment_string)
+			sum_of_chars = self.view.insert(edit, 0, "\n"+comment.comment_string)
+			print(sum_of_chars)
 			self.view.insert(edit, 0, "\n\n\n@"+comment.username + "\t" + comment.timestamp)
 
 		self.view.set_scratch(True)
@@ -253,9 +184,9 @@ class DisplayUserInputCommand(sublime_plugin.TextCommand):
 class CloseLayoutCommand(sublime_plugin.WindowCommand):
 	def run(self):
 		global comment_view_obj
-		global layout_flag
+		#global layout_flag
 		global layout_region
-		layout_flag = False
+		#layout_flag = False
 		layout_region = "0"
 
 		self.window.focus_view(comment_view_obj)
