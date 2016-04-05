@@ -146,16 +146,19 @@ class HighlightChange(sublime_plugin.EventListener):
 					window.run_command(command_name, command_arguments)
 					window.run_command("display_user_input", {"selected_thread_object" : thread_index})
 					window.focus_view(current_editing_file)
+			else:
+				current_editing_file.add_regions(thread_object.thread_key, region2, 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
+
 
 
 
 
 		#fixed the dual highlight problem
-		for thread_object in list_of_threads:
-			if layout_region != thread_object.thread_key:
+		# for thread_object in list_of_threads:
+		# 	if layout_region != thread_object.thread_key:
 
-				region1 = current_editing_file.get_regions(thread_object.thread_key)
-				current_editing_file.add_regions(thread_object.thread_key, region1, 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
+		# 		region1 = current_editing_file.get_regions(thread_object.thread_key)
+		# 		current_editing_file.add_regions(thread_object.thread_key, region1, 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
 
 
 #displays content from the datastructure
@@ -169,9 +172,8 @@ class DisplayUserInputCommand(sublime_plugin.TextCommand):
 		current_thread = list_of_threads[selected_thread_object]
 		sum_of_chars = 0
 		com_list= current_thread.list_of_comments
-		com_list.reverse()
 
-		for comment in com_list:
+		for comment in reversed(com_list):
 			#self.view.insert(edit, 0, "comment")
 			sum_of_chars = self.view.insert(edit, 0, "\n"+comment.comment_string)
 			print(sum_of_chars)
