@@ -2,6 +2,7 @@
 
 import  sublime,sublime_plugin, json, uuid, subprocess, os
 from datetime import datetime
+import time
 
 #Global list of thread objects
 list_of_threads = []  
@@ -11,8 +12,13 @@ new_list_of_threads = []
 
 class Thread:
 
-	def __init__(self, region, comment_string = None,list_of_comments = [], is_resolved = False):
-		self.thread_key = str(uuid.uuid4())
+	def __init__(self, region,thread_key = None , comment_string = None,list_of_comments = [], is_resolved = False):
+		#When reading from the file
+		if ( thread_key == None):
+			self.thread_key = str(uuid.uuid4())
+		#when initializing from plugin
+		else:
+			self.thread_key = thread_key
 
 		# #region changing from string to sublime region object
 		# getting_region = list(region.split(','))
@@ -53,12 +59,14 @@ class Thread:
 			if not os.path.exists(thread_path):
 				os.makedirs(thread_path)
 			with open(thread_path + '/' + '1' + '.txt', 'w') as fl:
-				fl.write("thread_key:" + x.thread_key + "\n" + "is_resolved" + str(x.is_resolved))
+				fl.write( str(x.region) +"\n" + x.thread_key + "\n" + str(x.is_resolved))
 			for y in x.list_of_comments:
-				with open(thread_path + '/' + y.timestamp + '.txt', 'w') as fl:
-					fl.write('Username: ' + y.username + '\n' + 'Comment Key: ' + y.comment_key + '\n' + 'Comment String: ' + y.comment_string)
+				with open(thread_path + '/' + y.timestamp + '.txt', 'a') as fl:
+					fl.write(y.username + y.comment_key + '\n' + y.comment_string + "\n" +y.timestamp)
 
 
+	#@staticmethod
+	
 	#Reading thread from file
 	@staticmethod #TODO
 	def read_thread():
@@ -92,6 +100,31 @@ class Thread:
 	def add_comment(self, comment_string):
 		cobj = Comment(comment_string)
 		self.list_of_comments.append(cobj)
+
+
+
+def read_multiple_files(): #reading from multiple files directly into sublime DS
+
+		for root, dirs, files in os.walk('/home/aaron/Desktop/Comments/'):
+			local_list_of_comments = []
+			for name in files:
+
+				if (name !=  '1.txt'):
+					with open(os.path.join(root,name), 'r') as fl:
+						content = fl.readlines()
+						c = Comment(str(content[2])[0:-1],str(content[1])[0:-1],str(content[0])[0:-1],str(content[3])[0:-1])
+						local_list_of_comments.append(c)
+
+			for name in files:
+				if (name == '1.txt'):
+					with open(os.path.join(root,name), 'r') as fl:
+						content = fl.readlines()
+						reg = str(content[0])[1:-2]
+						t = Thread( (sublime.Region(int(list(reg.split(','))[0]),int(list(reg.split(','))[1]))), thread_key = str(content[1])[0:-1],  comment_string = None, list_of_comments = local_list_of_comments, is_resolved = str(content[2])[0:-1])
+						t.add_thread(new_list_of_threads)
+
+
+
 
 
 
@@ -164,16 +197,27 @@ class WritetestCommand(sublime_plugin.TextCommand):
 		reg1 = sublime.Region(12,45)
 
 		t = Thread( reg1,  comment_string = "This is a first comment", list_of_comments = [])
-
+		time.sleep(5)
 		t.add_thread(list_of_threads)
 		t.add_comment("second comment")
+		time.sleep(5)
+		t.add_comment("third comment")
 
-		Thread.write_list_threads(list_of_threads)
-		yo = Thread.read_thread()
-		new_list_of_threads = Thread.converting_from_file_to_new_list_of_threads(yo)
+
+
+
+		Thread.WriteCreateThreadFolder(list_of_threads)
+
+
+		read_multiple_files()
+
+
+
+		# Thread.write_list_threads(list_of_threads)
+		# yo = Thread.read_thread()
+		# new_list_of_threads = Thread.converting_from_file_to_new_list_of_threads(yo)
 
 		print(new_list_of_threads[0].list_of_comments[0].comment_string)
-		Thread.WriteCreateThreadFolder(list_of_threads)
 
 
 
