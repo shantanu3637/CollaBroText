@@ -1,9 +1,11 @@
 import sublime, sublime_plugin
 from .datastructure_plugin import *
 
+from datetime import datetime, timedelta
+from functools import wraps
+
 #global layout_flag
 global layout_region
-
 
 
 #layout_flag = False
@@ -15,6 +17,35 @@ list_of_threads = []
 # 	def run(self, edit):
 # 		self.view.insert(edit, 0, "Hello, World!")
 
+#Throttle class to run on selection modifier 
+class throttle(object):
+    """
+    Decorator that prevents a function from being called more than once every
+    time period.
+    To create a function that cannot be called more than once a minute:
+        @throttle(minutes=1)
+        def my_fun():
+            pass
+    """
+    def __init__(self, seconds=0, minutes=0, hours=0):
+        self.throttle_period = timedelta(
+            seconds=seconds, minutes=minutes, hours=hours
+        )
+        self.time_of_last_call = datetime.min
+
+    def __call__(self, fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            now = datetime.now()
+            time_since_last_call = now - self.time_of_last_call
+
+            if time_since_last_call > self.throttle_period:
+                self.time_of_last_call = now
+                return fn(*args, **kwargs)
+
+        return wrapper
+
+
 
 class PrintTestCommand(sublime_plugin.TextCommand):
 	def run(self,edit):
@@ -23,9 +54,6 @@ class PrintTestCommand(sublime_plugin.TextCommand):
 
 
 class AddThreadCommentCommand(sublime_plugin.TextCommand):
-
-
-
 
 	def run(self,edit):
 		global current_editing_file
@@ -111,7 +139,7 @@ class HighlightChange(sublime_plugin.EventListener):
 		global layout_region		# if the layout is open, tells you which region it corresponds to
 		global current_editing_file
 
-		#print(layout_flag)
+		print("call")
 		#need window obj to call other commands
 		window = sublime.active_window()
 		#current_view_obj = current_editing_file
@@ -131,9 +159,13 @@ class HighlightChange(sublime_plugin.EventListener):
 				thread_index = list_of_threads.index(thread_object)
 				current_editing_file.add_regions(thread_object.thread_key, region2, 'string', 'dot', sublime.HIDE_ON_MINIMAP)
 
+				
+
 				if layout_region != thread_object.thread_key :
 					if layout_region != "0" :
 						window.run_command("close_layout")
+
+
 
 
 				if layout_region == "0" :
@@ -160,6 +192,10 @@ class HighlightChange(sublime_plugin.EventListener):
 		# 		region1 = current_editing_file.get_regions(thread_object.thread_key)
 		# 		current_editing_file.add_regions(thread_object.thread_key, region1, 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
 
+	thro = throttle(seconds = 0.3)
+	on_selection_modified = thro(on_selection_modified)
+
+
 
 #displays content from the datastructure
 class DisplayUserInputCommand(sublime_plugin.TextCommand):
@@ -172,11 +208,14 @@ class DisplayUserInputCommand(sublime_plugin.TextCommand):
 		current_thread = list_of_threads[selected_thread_object]
 		sum_of_chars = 0
 		com_list= current_thread.list_of_comments
+<<<<<<< HEAD
+		#com_list.reverse()
+=======
+>>>>>>> e3927b86f1bedeec35abd4875a893347282d0692
 
 		for comment in reversed(com_list):
 			#self.view.insert(edit, 0, "comment")
 			sum_of_chars = self.view.insert(edit, 0, "\n"+comment.comment_string)
-			print(sum_of_chars)
 			self.view.insert(edit, 0, "\n\n\n@"+comment.username + "\t" + comment.timestamp)
 
 		self.view.set_scratch(True)
