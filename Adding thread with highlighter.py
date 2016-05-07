@@ -208,10 +208,7 @@ class DisplayUserInputCommand(sublime_plugin.TextCommand):
 		current_thread = list_of_threads[selected_thread_object]
 		sum_of_chars = 0
 		com_list= current_thread.list_of_comments
-<<<<<<< HEAD
-		#com_list.reverse()
-=======
->>>>>>> e3927b86f1bedeec35abd4875a893347282d0692
+
 
 		for comment in reversed(com_list):
 			#self.view.insert(edit, 0, "comment")
