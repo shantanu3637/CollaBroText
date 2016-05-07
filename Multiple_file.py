@@ -55,7 +55,10 @@ class Thread:
 	@staticmethod
 	def WriteCreateThreadFolder(plist_of_threads):
 		for x in plist_of_threads:
-			thread_path = '/home/aaron/Desktop/Comments/' + str(x.thread_key)
+			thread_path = str(os.getcwd()) + '/Comments' #Checks if a Comments folder is present
+			if not os.path.exists(thread_path):
+				os.makedirs(thread_path)
+			thread_path = str(os.getcwd()) + '/' + 'Comments' + '/' + str(x.thread_key) #Creates a folder for a thread
 			if not os.path.exists(thread_path):
 				os.makedirs(thread_path)
 			with open(thread_path + '/' + '1' + '.txt', 'w') as fl:
@@ -105,7 +108,7 @@ class Thread:
 
 def read_multiple_files(): #reading from multiple files directly into sublime DS
 
-		for root, dirs, files in os.walk('/home/aaron/Desktop/Comments/'):
+		for root, dirs, files in os.walk(str(os.getcwd()) + '/' + 'Comments'):
 			local_list_of_comments = []
 			for name in files:
 
@@ -218,6 +221,8 @@ class WritetestCommand(sublime_plugin.TextCommand):
 		# new_list_of_threads = Thread.converting_from_file_to_new_list_of_threads(yo)
 
 		print(new_list_of_threads[0].list_of_comments[0].comment_string)
+		print(new_list_of_threads[0].list_of_comments[1].comment_string)
+		print(new_list_of_threads[0].list_of_comments[2].comment_string)
 
 
 
