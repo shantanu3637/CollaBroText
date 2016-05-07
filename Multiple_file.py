@@ -1,6 +1,6 @@
 
 
-import  sublime,sublime_plugin, json, uuid, subprocess
+import  sublime,sublime_plugin, json, uuid, subprocess, os
 from datetime import datetime
 
 #Global list of thread objects
@@ -42,14 +42,27 @@ class Thread:
 	#Encode to JSON using Thread and comment Encoder and write to file
 	@staticmethod
 	def write_list_threads(plist_of_threads):	 
-		with open('/home/shantanu/Desktop/datastructurework/datafile.json', 'w') as f:
+		with open('/home/aaron/Desktop/datafile.json', 'w') as f:
 			json.dump([ThreadEncoder(indent = 1).default(x) for x in plist_of_threads], f, cls = ThreadEncoder, indent = 1)
+
+
+	@staticmethod
+	def WriteCreateThreadFolder(plist_of_threads):
+		for x in plist_of_threads:
+			thread_path = '/home/aaron/Desktop/Comments/' + str(x.thread_key)
+			if not os.path.exists(thread_path):
+				os.makedirs(thread_path)
+			with open(thread_path + '/' + '1' + '.txt', 'w') as fl:
+				fl.write("thread_key:" + x.thread_key + "\n" + "is_resolved" + str(x.is_resolved))
+			for y in x.list_of_comments:
+				with open(thread_path + '/' + y.timestamp + '.txt', 'w') as fl:
+					fl.write('Username: ' + y.username + '\n' + 'Comment Key: ' + y.comment_key + '\n' + 'Comment String: ' + y.comment_string)
 
 
 	#Reading thread from file
 	@staticmethod #TODO
 	def read_thread():
-		with open('/home/shantanu/Desktop/datastructurework/datafile.json', 'r') as fl:
+		with open('/home/aaron/Desktop/datafile.json', 'r') as fl:
 			new_list_of_threads = json.load(fl)
 			return(new_list_of_threads)
 
@@ -160,7 +173,7 @@ class WritetestCommand(sublime_plugin.TextCommand):
 		new_list_of_threads = Thread.converting_from_file_to_new_list_of_threads(yo)
 
 		print(new_list_of_threads[0].list_of_comments[0].comment_string)
-
+		Thread.WriteCreateThreadFolder(list_of_threads)
 
 
 
