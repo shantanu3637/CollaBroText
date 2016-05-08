@@ -61,11 +61,12 @@ class Thread:
 			
 		if os.path.exists(thread_path):
 			shutil.rmtree(thread_path)
+			os.makedirs(thread_path)
 
 		for x in plist_of_threads:
 			thread_path = pcurrent_file_directory + '/Comments' #Checks if a Comments folder is present
 			
-			os.makedirs(thread_path)
+			
 
 			# if not os.path.exists(thread_path):
 			# 	os.makedirs(thread_path)
