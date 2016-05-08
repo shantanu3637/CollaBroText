@@ -4,6 +4,8 @@ import  sublime,sublime_plugin, json, uuid, subprocess, os
 from datetime import datetime
 import time
 
+import shutil
+
 #Global list of thread objects
 list_of_threads = []  
 new_list_of_threads = []
@@ -56,11 +58,23 @@ class Thread:
 	def WriteCreateThreadFolder(pcurrent_file_directory, plist_of_threads):
 		for x in plist_of_threads:
 			thread_path = pcurrent_file_directory + '/Comments' #Checks if a Comments folder is present
+			
 			if not os.path.exists(thread_path):
 				os.makedirs(thread_path)
+			else:
+				shutil.rmtree(thread_path)
+				os.makedirs(thread_path)
+
 			thread_path = pcurrent_file_directory + '/' + 'Comments' + '/' + str(x.thread_key) #Creates a folder for a thread
-			if not os.path.exists(thread_path):
-				os.makedirs(thread_path)
+			
+			# if not os.path.exists(thread_path):
+			# 	os.makedirs(thread_path)
+			# else:
+			# 	shutil.rmtree(thread_path)
+			# 	os.makedirs(thread_path)
+
+			os.makedirs(thread_path)
+
 			with open(thread_path + '/' + '1' + '.txt', 'w') as fl:
 				fl.write( str(x.region) +"\n" + x.thread_key + "\n" + str(x.is_resolved))
 			for y in x.list_of_comments:
