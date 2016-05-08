@@ -7,7 +7,7 @@ import time
 import shutil
 
 #Global list of thread objects
-list_of_threads = []  
+list_of_threads = []
 new_list_of_threads = []
 
 
@@ -49,7 +49,7 @@ class Thread:
 
 	#Encode to JSON using Thread and comment Encoder and write to file
 	@staticmethod
-	def write_list_threads(plist_of_threads):	 
+	def write_list_threads(plist_of_threads):
 		with open('/home/aaron/Desktop/datafile.json', 'w') as f:
 			json.dump([ThreadEncoder(indent = 1).default(x) for x in plist_of_threads], f, cls = ThreadEncoder, indent = 1)
 
@@ -58,15 +58,15 @@ class Thread:
 	def WriteCreateThreadFolder(pcurrent_file_directory, plist_of_threads):
 
 		thread_path = pcurrent_file_directory + '/Comments' #Checks if a Comments folder is present
-			
+
 		if os.path.exists(thread_path):
 			shutil.rmtree(thread_path)
 			os.makedirs(thread_path)
 
 		for x in plist_of_threads:
 			thread_path = pcurrent_file_directory + '/Comments' #Checks if a Comments folder is present
-			
-			
+
+
 
 			# if not os.path.exists(thread_path):
 			# 	os.makedirs(thread_path)
@@ -75,7 +75,7 @@ class Thread:
 			# 	os.makedirs(thread_path)
 
 			thread_path = pcurrent_file_directory + '/' + 'Comments' + '/' + str(x.thread_key) #Creates a folder for a thread
-			
+
 			# if not os.path.exists(thread_path):
 			# 	os.makedirs(thread_path)
 			# else:
@@ -88,11 +88,11 @@ class Thread:
 				fl.write( str(x.region) +"\n" + x.thread_key + "\n" + str(x.is_resolved))
 			for y in x.list_of_comments:
 				with open(thread_path + '/' + y.timestamp + '.txt', 'w') as fl:
-					fl.write(y.username + y.comment_key + '\n' + y.comment_string + "\n" +y.timestamp)
+					fl.write(y.username + '\n' + y.comment_key + '\n' + y.comment_string + "\n" +y.timestamp)
 
 
 	#@staticmethod
-	
+
 	#Reading thread from file
 	@staticmethod #TODO
 	def read_thread():
@@ -106,10 +106,10 @@ class Thread:
 	def converting_from_file_to_new_list_of_threads(pnew_list_of_threads):
 
 		# pnewer_list_of_threads = [Thread( x["region"], list_of_comments = [ Comment(y["comment_string"],y["comment_key"],y["username"],y["timestamp"]) for y in x["list_of_comments"] ] , is_resolved = x["is_resolved"]) for x in pnew_list_of_threads]
-		
 
-		pnewer_list_of_threads = [Thread( sublime.Region(int(list(x["region"].split(','))[0]),int(list(x["region"].split(','))[1])), 
-			list_of_comments = [ Comment(y["comment_string"],y["comment_key"],y["username"],y["timestamp"]) for y in x["list_of_comments"] ], 
+
+		pnewer_list_of_threads = [Thread( sublime.Region(int(list(x["region"].split(','))[0]),int(list(x["region"].split(','))[1])),
+			list_of_comments = [ Comment(y["comment_string"],y["comment_key"],y["username"],y["timestamp"]) for y in x["list_of_comments"] ],
 			is_resolved = x["is_resolved"]) for x in pnew_list_of_threads]
 		return pnewer_list_of_threads
 
@@ -165,8 +165,8 @@ class Comment:
 
 			#getting username from terminal
 			git_uname = subprocess.Popen("git config user.name", shell=True, stdout=subprocess.PIPE).stdout.read()
-			self.username = git_uname.decode("utf-8")
-			
+			self.username = str(git_uname.decode("utf-8"))[0:-2]
+
 
 			self.comment_key = str(uuid.uuid4())
 
@@ -189,7 +189,7 @@ class Comment:
 
 
 class ThreadEncoder(json.JSONEncoder):
-	
+
 	def default(self, obj):
 
 		#getting rid of "" marks
@@ -247,6 +247,3 @@ class WritetestCommand(sublime_plugin.TextCommand):
 		print(new_list_of_threads[0].list_of_comments[0].comment_string)
 		print(new_list_of_threads[0].list_of_comments[1].comment_string)
 		print(new_list_of_threads[0].list_of_comments[2].comment_string)
-
-
-
