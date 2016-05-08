@@ -56,14 +56,22 @@ class Thread:
 
 	@staticmethod
 	def WriteCreateThreadFolder(pcurrent_file_directory, plist_of_threads):
+
+		thread_path = pcurrent_file_directory + '/Comments' #Checks if a Comments folder is present
+			
+		if os.path.exists(thread_path):
+			shutil.rmtree(thread_path)
+
 		for x in plist_of_threads:
 			thread_path = pcurrent_file_directory + '/Comments' #Checks if a Comments folder is present
 			
-			if not os.path.exists(thread_path):
-				os.makedirs(thread_path)
-			else:
-				shutil.rmtree(thread_path)
-				os.makedirs(thread_path)
+			os.makedirs(thread_path)
+
+			# if not os.path.exists(thread_path):
+			# 	os.makedirs(thread_path)
+			# else:
+			# 	shutil.rmtree(thread_path)
+			# 	os.makedirs(thread_path)
 
 			thread_path = pcurrent_file_directory + '/' + 'Comments' + '/' + str(x.thread_key) #Creates a folder for a thread
 			
