@@ -263,7 +263,7 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
 		else:
 			print ("Not in a Git repo")
 			run_plugin = False
-		
+
 		for thread in list_of_threads:
 			view.add_regions(thread.thread_key, [thread.region], 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
 
@@ -303,20 +303,20 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
 		Thread.WriteCreateThreadFolder(current_file_directory,list_of_threads)
 
 
-		# sublime.message_dialog(str(subprocess.Popen("git status", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()))
+		sublime.message_dialog(str(subprocess.Popen("git status", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()))
 
-		# subprocess.Popen("git add --all", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
-		# sublime.message_dialog("Git add is done")
+		subprocess.Popen("git add --all", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
+		sublime.message_dialog("Git add is done")
 
-		# #"git add '"+temp_dir+"'"
+		#"git add '"+temp_dir+"'"
 
-		# sublime.message_dialog(str(subprocess.Popen("git status", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()))
+		sublime.message_dialog(str(subprocess.Popen("git status", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()))
 
-		# temp3 = subprocess.Popen("git commit -m\"commit to git staging area\"", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
-		# sublime.message_dialog(str(temp3))
+		temp3 = subprocess.Popen("git commit -m\"commit to git staging area\"", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
+		sublime.message_dialog(str(temp3))
 
-		# temp4 = subprocess.Popen("git pull origin master", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
-		# sublime.message_dialog(str(temp4))
+		temp4 = subprocess.Popen("git pull origin master", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
+		sublime.message_dialog(str(temp4))
 
-		# subprocess.Popen("git push origin master", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
-		# sublime.message_dialog("Push Completed")
+		subprocess.Popen("git push origin master", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
+		sublime.message_dialog("Push Completed")
