@@ -64,7 +64,7 @@ class Thread:
 			with open(thread_path + '/' + '1' + '.txt', 'w') as fl:
 				fl.write( str(x.region) +"\n" + x.thread_key + "\n" + str(x.is_resolved))
 			for y in x.list_of_comments:
-				with open(thread_path + '/' + y.timestamp + '.txt', 'a') as fl:
+				with open(thread_path + '/' + y.timestamp + '.txt', 'w') as fl:
 					fl.write(y.username + y.comment_key + '\n' + y.comment_string + "\n" +y.timestamp)
 
 
