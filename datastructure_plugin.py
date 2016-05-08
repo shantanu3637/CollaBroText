@@ -42,14 +42,14 @@ class Thread:
 	#Encode to JSON using Thread and comment Encoder and write to file
 	@staticmethod
 	def write_list_threads(plist_of_threads):	 
-		with open('/home/shantanu/Desktop/datastructurework/datafile.json', 'w') as f:
+		with open('/home/kahlil/Desktop/datafile.json', 'w') as f:
 			json.dump([ThreadEncoder(indent = 1).default(x) for x in plist_of_threads], f, cls = ThreadEncoder, indent = 1)
 
 
 	#Reading thread from file
 	@staticmethod #TODO
 	def read_thread():
-		with open('/home/shantanu/Desktop/datastructurework/datafile.json', 'r') as fl:
+		with open('/home/kahlil/Desktop/datafile.json', 'r') as fl:
 			new_list_of_threads = json.load(fl)
 			return(new_list_of_threads)
 
@@ -155,12 +155,27 @@ class WritetestCommand(sublime_plugin.TextCommand):
 		t.add_thread(list_of_threads)
 		t.add_comment("second comment")
 
+
+		print(list_of_threads[0])
+		print(list_of_threads[0].thread_key)
+		print(list_of_threads[0].region)
+		print(list_of_threads[0].list_of_comments)
+		print(list_of_threads[0].is_resolved)
+
+
+		print (type((list_of_threads[0])))
+		print (type((list_of_threads[0].thread_key)))
+		print (type(list_of_threads[0].region))
+		print(type(list_of_threads[0].list_of_comments))
+		print(type(list_of_threads[0].is_resolved))
+
+
+		
+
 		Thread.write_list_threads(list_of_threads)
 		yo = Thread.read_thread()
 		new_list_of_threads = Thread.converting_from_file_to_new_list_of_threads(yo)
 
 		print(new_list_of_threads[0].list_of_comments[0].comment_string)
-
-
 
 

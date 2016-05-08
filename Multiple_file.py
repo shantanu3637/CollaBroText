@@ -53,12 +53,12 @@ class Thread:
 
 
 	@staticmethod
-	def WriteCreateThreadFolder(plist_of_threads):
+	def WriteCreateThreadFolder(pcurrent_file_directory, plist_of_threads):
 		for x in plist_of_threads:
-			thread_path = str(os.getcwd()) + '/Comments' #Checks if a Comments folder is present
+			thread_path = pcurrent_file_directory + '/Comments' #Checks if a Comments folder is present
 			if not os.path.exists(thread_path):
 				os.makedirs(thread_path)
-			thread_path = str(os.getcwd()) + '/' + 'Comments' + '/' + str(x.thread_key) #Creates a folder for a thread
+			thread_path = pcurrent_file_directory + '/' + 'Comments' + '/' + str(x.thread_key) #Creates a folder for a thread
 			if not os.path.exists(thread_path):
 				os.makedirs(thread_path)
 			with open(thread_path + '/' + '1' + '.txt', 'w') as fl:
@@ -106,9 +106,9 @@ class Thread:
 
 
 
-def read_multiple_files(): #reading from multiple files directly into sublime DS
+def read_multiple_files(pcurrent_file_directory): #reading from multiple files directly into sublime DS
 
-		for root, dirs, files in os.walk(str(os.getcwd()) + '/' + 'Comments'):
+		for root, dirs, files in os.walk(pcurrent_file_directory + '/' + 'Comments'):
 			local_list_of_comments = []
 			for name in files:
 
@@ -124,7 +124,7 @@ def read_multiple_files(): #reading from multiple files directly into sublime DS
 						content = fl.readlines()
 						reg = str(content[0])[1:-2]
 						t = Thread( (sublime.Region(int(list(reg.split(','))[0]),int(list(reg.split(','))[1]))), thread_key = str(content[1])[0:-1],  comment_string = None, list_of_comments = local_list_of_comments, is_resolved = str(content[2])[0:-1])
-						t.add_thread(new_list_of_threads)
+						t.add_thread(list_of_threads)
 
 
 
@@ -212,7 +212,7 @@ class WritetestCommand(sublime_plugin.TextCommand):
 		Thread.WriteCreateThreadFolder(list_of_threads)
 
 
-		read_multiple_files()
+		#read_multiple_files(pass)
 
 
 

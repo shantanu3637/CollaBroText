@@ -1,12 +1,17 @@
 import sublime, sublime_plugin
-from .datastructure_plugin import *
+import os,subprocess
+from .Multiple_file import *
 
 from datetime import datetime, timedelta
 from functools import wraps
 
-#global layout_flag
+#global layout_fla
 global layout_region
 
+global run_plugin 
+run_plugin = True
+
+global current_file_directory
 
 #layout_flag = False
 layout_region = "0"
@@ -139,7 +144,7 @@ class HighlightChange(sublime_plugin.EventListener):
 		global layout_region		# if the layout is open, tells you which region it corresponds to
 		global current_editing_file
 
-		print("call")
+		#print("call")
 		#need window obj to call other commands
 		window = sublime.active_window()
 		#current_view_obj = current_editing_file
@@ -233,3 +238,89 @@ class CloseLayoutCommand(sublime_plugin.WindowCommand):
 		command_name = "set_layout"
 		command_arguments = { "cols": [0, 1.0],"rows": [0.0,1.0],"cells": [ [0, 0, 1, 1], ] }
 		self.window.run_command(command_name, command_arguments)
+
+
+
+class InitialCheckOnLoad(sublime_plugin.EventListener):
+	def on_load_async(self,view):
+		global list_of_threads
+		global run_plugin, current_file_directory
+		current_file_name_path = view.file_name()
+		forward_slash_index = current_file_name_path.rfind('/', 0, len(current_file_name_path)) 		#finds index of last forward slash
+		current_file_directory = current_file_name_path[0:forward_slash_index]   #assigns the directory of the file to the variable current_file_directory
+		print ("path of file loaded is "+ current_file_directory)
+		a = subprocess.Popen("git rev-parse --is-inside-work-tree", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
+		print (a)
+		if a == "true\n":
+			print ("In a valid Git repo")
+			check_comments_path = current_file_directory + "/Comments"
+			if os.path.exists(check_comments_path):    #check if Comments folder exists
+				read_multiple_files(current_file_directory)
+				# templist = Thread.read_thread()
+				# list_of_threads = Thread.converting_from_file_to_new_list_of_threads(templist)
+		else:
+			print ("Not in a Git repo")
+			run_plugin = False
+
+	#def on_pre_close(self,view):
+
+
+class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
+	def on_post_save(self, view):
+		#global UUID
+		global list_of_threads, current_file_directory
+
+		# for id in UUID :
+		# 	region_from_sublime = view.get_regions(id)
+		# 	print("before sync")
+		# 	print(id)
+		# 	print(str(region_from_sublime)[1:-1])
+
+		# for thread in list_of_threads :
+		# 	region_from_ds =  thread.region
+		# 	print(thread.thread_key)
+		# 	print(region_from_ds)
+
+		# for id in UUID:
+		# 	region_from_sublime = view.get_regions(id)
+
+		for thread in list_of_threads :
+			#region_from_ds = thread.region
+			 
+			region_from_sublime = view.get_regions(thread.thread_key)
+			thread.region = region_from_sublime[0]
+			# print(str(region_from_sublime[0]))
+			# print (type(region_from_sublime[0]))
+
+		Thread.WriteCreateThreadFolder(current_file_directory,list_of_threads)
+
+
+		
+		# print(list_of_threads[0])
+		# print(list_of_threads[0].thread_key)
+		# print(list_of_threads[0].region)
+		# print(list_of_threads[0].list_of_comments)
+		# print(list_of_threads[0].is_resolved)
+
+
+		# print (type((list_of_threads[0])))
+		# print (type((list_of_threads[0].thread_key)))
+		# print (type(list_of_threads[0].region))
+		# print(type(list_of_threads[0].list_of_comments))
+		# print(type(list_of_threads[0].is_resolved))
+
+
+
+		# print (type(list_of_threads))
+		# Thread.write_list_threads(list_of_threads)
+
+		# for id in UUID :
+		# 	region_from_sublime = view.get_regions(id)
+		# 	print("after sync")
+		# 	print(id)
+		# 	print(str(region_from_sublime)[1:-1])
+
+		# for thread in list_of_threads :
+		# 	region_from_ds =  thread.region
+		# 	print(thread.thread_key)
+		# 	print(str(region_from_ds)[1:-1])
