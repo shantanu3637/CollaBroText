@@ -318,5 +318,5 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
 		temp4 = subprocess.Popen("git pull origin master", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
 		sublime.message_dialog(str(temp4))
 
-		subprocess.Popen("git push origin master", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
-		sublime.message_dialog("Push Completed")
+		push_returned_message = subprocess.Popen("git push origin master", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
+		sublime.message_dialog(str(push_returned_message))
