@@ -9,7 +9,7 @@ from functools import wraps
 global layout_region
 
 global run_plugin
-run_plugin = True
+run_plugin = False
 
 
 #layout_flag = False
@@ -250,10 +250,10 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
 		forward_slash_index = current_file_name_path.rfind('/', 0, len(current_file_name_path)) 		#finds index of last forward slash
 		current_file_directory = current_file_name_path[0:forward_slash_index]   #assigns the directory of the file to the variable current_file_directory
 		print ("path of file loaded is "+ current_file_directory)
-		a = subprocess.Popen("git rev-parse --is-inside-work-tree", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
-		print (a)
-		if a == "true\n":
+		check_for_git_repo = subprocess.Popen("git rev-parse --is-inside-work-tree", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
+		if check_for_git_repo == "true\n":
 			print ("In a valid Git repo")
+			run_plugin = True
 			check_comments_path = current_file_directory + "/Comments"
 			if os.path.exists(check_comments_path):    #check if Comments folder exists
 				list_of_threads = read_multiple_files(current_file_directory)
@@ -262,7 +262,6 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
 				# list_of_threads = Thread.converting_from_file_to_new_list_of_threads(templist)
 		else:
 			print ("Not in a Git repo")
-			run_plugin = False
 
 		for thread in list_of_threads:
 			view.add_regions(thread.thread_key, [thread.region], 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
@@ -271,29 +270,7 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
 
 class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
 	def on_post_save(self, view):
-		#global UUID
-		global list_of_threads
-
-		current_file_name_path = view.file_name()
-		forward_slash_index = current_file_name_path.rfind('/', 0, len(current_file_name_path)) 		#finds index of last forward slash
-		current_file_directory = current_file_name_path[0:forward_slash_index]   #assigns the directory of the file to the variable current_file_directory
-
-		# for id in UUID :
-		# 	region_from_sublime = view.get_regions(id)
-		# 	print("before sync")
-		# 	print(id)
-		# 	print(str(region_from_sublime)[1:-1])
-
-		# for thread in list_of_threads :
-		# 	region_from_ds =  thread.region
-		# 	print(thread.thread_key)
-		# 	print(region_from_ds)
-
-		# for id in UUID:
-		# 	region_from_sublime = view.get_regions(id)
-
 		for thread in list_of_threads :
-			#region_from_ds = thread.region
 
 			region_from_sublime = view.get_regions(thread.thread_key)
 			thread.region = region_from_sublime[0]
@@ -302,21 +279,29 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
 
 		Thread.WriteCreateThreadFolder(current_file_directory,list_of_threads)
 
+		if(run_plugin==True):
+			
+			global list_of_threads
 
-		sublime.message_dialog(str(subprocess.Popen("git status", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()))
+			current_file_name_path = view.file_name()
+			forward_slash_index = current_file_name_path.rfind('/', 0, len(current_file_name_path)) 		#finds index of last forward slash
+			current_file_directory = current_file_name_path[0:forward_slash_index]   #assigns the directory of the file to the variable current_file_directory
 
-		subprocess.Popen("git add --all", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
-		sublime.message_dialog("Git add is done")
 
-		#"git add '"+temp_dir+"'"
+			sublime.message_dialog(str(subprocess.Popen("git status", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()))
 
-		sublime.message_dialog(str(subprocess.Popen("git status", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()))
+			subprocess.Popen("git add --all", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
+			sublime.message_dialog("Git add is done")
 
-		temp3 = subprocess.Popen("git commit -m\"commit to git staging area\"", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
-		sublime.message_dialog(str(temp3))
+			#"git add '"+temp_dir+"'"
 
-		temp4 = subprocess.Popen("git pull origin master", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
-		sublime.message_dialog(str(temp4))
+			sublime.message_dialog(str(subprocess.Popen("git status", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()))
 
-		push_returned_message = subprocess.Popen("git push origin master", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
-		sublime.message_dialog(str(push_returned_message))
+			temp3 = subprocess.Popen("git commit -m\"commit to git staging area\"", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
+			sublime.message_dialog(str(temp3))
+
+			temp4 = subprocess.Popen("git pull origin master", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
+			sublime.message_dialog(str(temp4))
+
+			push_returned_message = subprocess.Popen("git push origin master", cwd = current_file_directory, universal_newlines = True, shell=True, stdout=subprocess.PIPE).stdout.read()
+			sublime.message_dialog(str(push_returned_message))
