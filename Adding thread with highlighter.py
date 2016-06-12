@@ -119,15 +119,7 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
             self.add_new_comment(user_input)
 
 
-# class AddNewComment(sublime_plugin.TextCommand):
-    # TODO add comment modue from google keep
 
-    # def close_view(self):
-    # 	self.window.focus_view(self.view)
-    # 	self.window.run_command("close_file")
-
-
-# class ThreadObjectCreation()
 
 
 # Command runs when cursor position is changed. Displays comments corresponding to the region in file
