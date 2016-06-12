@@ -130,8 +130,8 @@ class HighlightChange(sublime_plugin.EventListener):
         # layout(UI) is on or off (open or not)
         global layout_region		# if the layout is open, tells you which region it corresponds to
         global current_editing_file
+        global window
 
-        # print("call")
         # need window obj to call other commands
         window = sublime.active_window()
         #current_view_obj = current_editing_file
@@ -191,7 +191,7 @@ class DisplayUserInputCommand(sublime_plugin.TextCommand):
         global comment_view_obj
 
         comment_view_obj = self.view
-
+        sublime.status_message("view id of UI is set here: "+str(comment_view_obj))
         current_thread = list_of_threads[selected_thread_object]
         sum_of_chars = 0
         com_list = current_thread.list_of_comments
@@ -267,7 +267,7 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
 
 
 class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
-    def on_post_save(self, view):
+    def on_post_save_async(self, view):
         global list_of_threads
         global run_plugin
         for thread in list_of_threads:
@@ -275,40 +275,38 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
             thread.region = region_from_sublime[0]
 
         if (run_plugin == True):
-            view.run_command("call_git_stuff")
+            #view.run_command("call_git_stuff")
+            current_file_name_path = view.file_name()
+            forward_slash_index = current_file_name_path.rfind(
+                '/', 0, len(current_file_name_path))  # finds index of last forward slash
+            # assigns the directory of the file to the variable
+            # current_file_directory
+            current_file_directory = current_file_name_path[
+                0:forward_slash_index]
 
-class CallGitStuffCommand(sublime_plugin.TextCommand):
-    def run(self, edit):
-        sublime.set_timeout_async(lambda: self.view.run_command("git_pull_push"),0)
+            Thread.WriteCreateThreadFolder(
+            current_file_directory, list_of_threads)
 
-class GitPullPushCommand(sublime_plugin.TextCommand):
-    def run(self, edit):
-        current_file_name_path = self.view.file_name()
-        forward_slash_index = current_file_name_path.rfind(
-            '/', 0, len(current_file_name_path))  # finds index of last forward slash
-        # assigns the directory of the file to the variable
-        # current_file_directory
-        current_file_directory = current_file_name_path[
-            0:forward_slash_index]
+            sublime.status_message(str(subprocess.Popen("git status", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()))
 
-        Thread.WriteCreateThreadFolder(
-        current_file_directory, list_of_threads)
+            pull_message = subprocess.Popen("git pull origin master", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
+            sublime.status_message(str(pull_message))
+            subprocess.Popen("git add --all", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
+            sublime.status_message("Git add is done")
 
-        #sublime.message_dialog(str(subprocess.Popen("git status", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()))
+            sublime.status_message(str(subprocess.Popen("git status", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()))
 
-        pull_message = subprocess.Popen("git pull origin master", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
-        #sublime.message_dialog(str(pull_message))
-        subprocess.Popen("git add --all", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
-        #sublime.message_dialog("Git add is done")
+            commit_message = subprocess.Popen("git commit -m\"commit to git staging area\"", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
+            sublime.status_message(str(commit_message))
 
-        #"git add '"+temp_dir+"'"
+            push_returned_message = subprocess.Popen("git push origin master", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
+            sublime.message_dialog("Pushed to Git")
 
-        #sublime.message_dialog(str(subprocess.Popen("git status", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()))
-
-        temp3 = subprocess.Popen("git commit -m\"commit to git staging area\"", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
-        #sublime.message_dialog(str(temp3))
-
-
-
-        push_returned_message = subprocess.Popen("git push origin master", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
-        sublime.message_dialog(str(push_returned_message))
+    def on_pre_close(self, view):
+        global comment_view_obj
+        global current_editing_file
+        if (view == comment_view_obj):
+            sublime.status_message("Closing UI so no action")
+        elif(view == current_editing_file):
+            current_window = view.window()
+            current_window.run_command("close_layout")
