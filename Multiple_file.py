@@ -165,7 +165,7 @@ class Comment:
 
 			#getting username from terminal
 			git_uname = subprocess.Popen("git config user.name", shell=True, stdout=subprocess.PIPE).stdout.read()
-			self.username = str(git_uname.decode("utf-8"))[0:-2]
+			self.username = str(git_uname.decode("utf-8"))[0:-1]
 
 
 			self.comment_key = str(uuid.uuid4())
