@@ -1,7 +1,7 @@
 [
 
-{ "keys": ["ctrl+shift+4"], "command": "close_layout"},
+{ "keys": ["alt+x"], "command": "close_layout"},
 
-{ "keys": ["ctrl+shift+6"], "command": "add_thread_comment"}
+{ "keys": ["alt+d"], "command": "add_thread_comment"}
 
 ]
