@@ -107,10 +107,10 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
         global current_editing_file
 
         for thread_object in list_of_threads:
-            region2 = current_editing_file.get_regions(
+            region_from_object = current_editing_file.get_regions(
                 thread_object.thread_key)  # thread_key gives the UUID
             region = current_editing_file.sel()
-            if region2[0].contains(region[0]):
+            if region_from_object[0].contains(region[0]):
                 in_highlight = True
 
         if in_highlight == False:
@@ -141,17 +141,16 @@ class HighlightChange(sublime_plugin.EventListener):
 
         for thread_object in list_of_threads:
 
-            region2 = current_editing_file.get_regions(
-                thread_object.thread_key)  # thread_key gives the UUID
-            region = current_editing_file.sel()
+            region_from_object = current_editing_file.get_regions(thread_object.thread_key)  # thread_key gives the UUID
+            currently_selected_region = current_editing_file.sel()
             # print(current_editing_file.id())
             # print(view.id())
             # print(thread_object.thread_key)
-            # print(region2)
-            if region2[0].contains(region[0]):
+            # print(region_from_object)
+            if region_from_object[0].contains(currently_selected_region[0]):
                 thread_index = list_of_threads.index(thread_object)
                 current_editing_file.add_regions(
-                    thread_object.thread_key, region2, 'string', 'dot', sublime.HIDE_ON_MINIMAP)
+                    thread_object.thread_key, region_from_object, 'string', 'dot', sublime.HIDE_ON_MINIMAP)
 
                 if layout_region != thread_object.thread_key:
                     if layout_region != "0":
@@ -171,7 +170,7 @@ class HighlightChange(sublime_plugin.EventListener):
                     window.focus_view(current_editing_file)
             else:
                 current_editing_file.add_regions(
-                    thread_object.thread_key, region2, 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
+                    thread_object.thread_key, region_from_object, 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
 
         # fixed the dual highlight problem
         # for thread_object in list_of_threads:
