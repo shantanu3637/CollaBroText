@@ -4,3 +4,24 @@ List of features tbd:
   ✔ Formatting of date (today, yesterday)  @high @done (16-06-11 20:03)
   ☐ Editing comments @low
   ☐ Resolving Threads @low
+  ☐ When closing comment UI, reset variables and stuff
+
+  ✔ Make on_selection_modified stuff into a function(command) that can be called @done (16-06-13 17:11)
+  ✔ Refresh the Comment UI immediately when a new comment/thread is created/added @done (16-06-13 17:11)
+  ☐ 
+  
+
+Things to complete for coloring comments:
+  ✔ CBRT file: keep a blank file @done (16-06-13 17:09)
+  ✔ open file when opening layout for comments  @done (16-06-13 17:09)
+  ☐ wipe file when UI is closed
+
+    tmlanguage and tmTheme stuff:
+      ✔ Proper RegEx checking  @done (16-06-13 17:09)
+      ✔ Edit theme to change background color @done (16-06-13 17:09)
+
+  Stretch Goals for Coloring/UI:
+    ☐ Making the first comment in a thread differently colored from the other comments
+    ☐ Add a slight indentation (maybe 2 spaces) for all other comments after the first comment
+
+
