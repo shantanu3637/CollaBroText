@@ -100,7 +100,7 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
 
         # comment = str(user_input)
         # print comment
-
+        window = sublime.active_window()
         in_highlight = False
 
         # add_new_thread(comment)
@@ -117,18 +117,17 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
             self.add_new_thread(user_input)
         else:
             self.add_new_comment(user_input)
+            window.run_command("close_layout")
 
+        window.run_command("highlight_and_display")
 
-
-
-
-# Command runs when cursor position is changed. Displays comments corresponding to the region in file
-# NEED TO FIX HIGHLIGHT AFTER CLOSING LAYOUT
-class HighlightChange(sublime_plugin.EventListener):
-    def on_selection_modified(self, view):
+# Command is called to highlight and display the comments
+# Called by on_selection_modified and add_thread_comment
+class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
+    def run(self, view):
         # global layout_flag                      #boolean which tells if
         # layout(UI) is on or off (open or not)
-        global layout_region		# if the layout is open, tells you which region it corresponds to
+        global layout_region        # if the layout is open, tells you which region it corresponds to
         global current_editing_file
         global window
 
@@ -139,6 +138,7 @@ class HighlightChange(sublime_plugin.EventListener):
         # if current cursor position is contained in a region in file and no layout is open then open layout
         # list_of_threads contains a list of objects of the thread class
 
+        # Need to iterate through the full list due to the case when moving from one highlighted region to another`
         for thread_object in list_of_threads:
 
             region_from_object = current_editing_file.get_regions(thread_object.thread_key)  # thread_key gives the UUID
@@ -163,7 +163,7 @@ class HighlightChange(sublime_plugin.EventListener):
                     #thread_uuid = thread_object.thread_key
                     command_name = "set_layout"
                     command_arguments = {"cols": [0, 0.72, 1.0], "rows": [
-                        0.0, 1.0], "cells": [[0, 0, 1, 1], [1, 0, 2, 1]]	}
+                        0.0, 1.0], "cells": [[0, 0, 1, 1], [1, 0, 2, 1]]    }
                     window.run_command(command_name, command_arguments)
                     window.run_command("display_user_input", {
                                        "selected_thread_object": thread_index})
@@ -174,16 +174,28 @@ class HighlightChange(sublime_plugin.EventListener):
 
         # fixed the dual highlight problem
         # for thread_object in list_of_threads:
-        # 	if layout_region != thread_object.thread_key:
+        #   if layout_region != thread_object.thread_key:
 
-        # 		region1 = current_editing_file.get_regions(thread_object.thread_key)
-        # 		current_editing_file.add_regions(thread_object.thread_key, region1, 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
+        #       region1 = current_editing_file.get_regions(thread_object.thread_key)
+        #       current_editing_file.add_regions(thread_object.thread_key, region1, 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
+
+
+
+# Command runs when cursor position is changed. Displays comments corresponding to the region in file
+# NEED TO FIX HIGHLIGHT AFTER CLOSING LAYOUT
+class HighlightChange(sublime_plugin.EventListener):
+    def on_selection_modified(self, view):
+        
+        window = sublime.active_window()
+        window.run_command("highlight_and_display")
+
 
     thro = throttle(seconds=0.3)
     on_selection_modified = thro(on_selection_modified)
 
 
 # displays content from the datastructure
+#called by highlight_and_display
 class DisplayUserInputCommand(sublime_plugin.TextCommand):
     def run(self, edit, selected_thread_object):
 
@@ -215,7 +227,8 @@ class DisplayUserInputCommand(sublime_plugin.TextCommand):
 
 # keybind ctrl+shft+4 to close the layout manually
 
-
+# closes the comments layout and resets control variables
+# called by highlight_and_display, on_pre_close, add_new_comment
 class CloseLayoutCommand(sublime_plugin.WindowCommand):
     def run(self):
         global comment_view_obj
