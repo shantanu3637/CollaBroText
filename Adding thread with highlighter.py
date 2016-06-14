@@ -165,7 +165,7 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
                     command_arguments = {"cols": [0, 0.72, 1.0], "rows": [
                         0.0, 1.0], "cells": [[0, 0, 1, 1], [1, 0, 2, 1]]    }
                     window.run_command(command_name, command_arguments)
-                    window.run_command("display_user_input", {
+                    window.run_command("display_comments", {
                                        "selected_thread_object": thread_index})
                     window.focus_view(current_editing_file)
             else:
@@ -196,7 +196,7 @@ class HighlightChange(sublime_plugin.EventListener):
 
 # displays content from the datastructure
 #called by highlight_and_display
-class DisplayUserInputCommand(sublime_plugin.TextCommand):
+class DisplayCommentsCommand(sublime_plugin.TextCommand):
     def run(self, edit, selected_thread_object):
 
         global comment_view_obj
@@ -225,7 +225,7 @@ class DisplayUserInputCommand(sublime_plugin.TextCommand):
         self.view.set_scratch(True)
         self.view.set_read_only(True)
 
-# keybind ctrl+shft+4 to close the layout manually
+# keybind alt+x to close the layout manually
 
 # closes the comments layout and resets control variables
 # called by highlight_and_display, on_pre_close, add_new_comment
