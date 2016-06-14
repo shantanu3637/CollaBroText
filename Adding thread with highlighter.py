@@ -258,6 +258,7 @@ class CloseLayoutCommand(sublime_plugin.WindowCommand):
         layout_region = "0"
 
         self.window.focus_view(comment_view_obj)
+        print("comment_view_obj on close" + str(comment_view_obj) + "current view" + str(self.view))
         self.window.run_command("close_file")
 
         command_name = "set_layout"
@@ -272,6 +273,7 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
         global run_plugin
         global current_editing_file
         current_editing_file = view
+        print("current editing on load " + str(current_editing_file))        
         current_file_name_path = view.file_name()
         forward_slash_index = current_file_name_path.rfind(
             '/', 0, len(current_file_name_path))  # finds index of last forward slash
