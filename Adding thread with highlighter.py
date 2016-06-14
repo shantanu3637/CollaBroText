@@ -201,8 +201,8 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
 
         global comment_view_obj
 
-        comment_view_obj = self.view
-        sublime.status_message("view id of UI is set here: "+str(comment_view_obj))
+        
+        # sublime.status_message("view id of UI is set here: "+str(comment_view_obj))
         current_thread = list_of_threads[selected_thread_object]
         sum_of_chars = 0
         com_list = current_thread.list_of_comments
@@ -235,13 +235,15 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
                 elif(split_only_date[0] == str(date.today().year)):
                     final_timestamp = split_only_date[1] + "-" + split_only_date[2] + " @ " + split_timestamp[1]
                 
-                fl.write("\n@" + comment.username + "\t" + final_timestamp)
-                fl.write("\n"comment.comment_string)
+                fl.write("\n\n@" + comment.username + "\t" + final_timestamp)
+                fl.write("\n" + comment.comment_string)
 
-        window.open_file("comments.cbrt")
+        window.open_file(package_directory + '/comments.cbrt')
+        comment_view_obj = self.view
+        print(comment_view_obj)
 
-        self.view.set_scratch(True)
-        self.view.set_read_only(True)
+        #self.view.set_scratch(True)
+        #self.view.set_read_only(True)
 
 # keybind alt+x to close the layout manually
 
@@ -335,8 +337,11 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
     def on_pre_close(self, view):
         global comment_view_obj
         global current_editing_file
+
+        print("editing file " + str(current_editing_file) + "\nclosed view " + str(view) + "\ncomment_view" + str(comment_view_obj))
+        
         if (view == comment_view_obj):
             sublime.status_message("Closing UI so no action")
         elif(view == current_editing_file):
-            current_window = view.window()
+            current_window = sublime.active_window()
             current_window.run_command("close_layout")
