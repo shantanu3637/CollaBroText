@@ -307,6 +307,7 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
                                  thread.region], 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
 
 
+
 class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
     def on_post_save_async(self, view):
         global list_of_threads
