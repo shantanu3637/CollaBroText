@@ -64,6 +64,8 @@ class Thread:
 			os.makedirs(thread_path)
 
 		for x in plist_of_threads:
+			# Shantanu while redoing, check this line to see if it is needed.
+			
 			thread_path = pcurrent_file_directory + '/Comments' #Checks if a Comments folder is present
 
 

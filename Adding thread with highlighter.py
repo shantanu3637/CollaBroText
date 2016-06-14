@@ -69,7 +69,7 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
         current_editing_file = self.view
 
         self.view.window().show_input_panel("Enter your comment:",
-                                            'hi test comment', self.on_done, None, None)
+                                            ' ', self.on_done, None, None)
         # sublime.set_timeout(self.close_view,1000)
 
     def add_new_thread(self, puser_input):
@@ -190,7 +190,7 @@ class HighlightChange(sublime_plugin.EventListener):
         window.run_command("highlight_and_display")
 
 
-    thro = throttle(seconds=0.3)
+    thro = throttle(seconds=10)
     on_selection_modified = thro(on_selection_modified)
 
 
@@ -230,11 +230,11 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
                 split_timestamp = comment.timestamp.split(' ')
                 split_only_date = split_timestamp[0].split('-')
                 if(split_timestamp[0] == str(date.today())):
-                    final_timestamp = "Today @ " + split_timestamp[1]
+                    final_timestamp = "Today at " + split_timestamp[1]
                 elif(split_timestamp[0] == str(date.today() - timedelta(days=1))):
-                    final_timestamp = "Yesterday @ " + split_timestamp[1]
+                    final_timestamp = "Yesterday at " + split_timestamp[1]
                 elif(split_only_date[0] == str(date.today().year)):
-                    final_timestamp = split_only_date[1] + "-" + split_only_date[2] + " @ " + split_timestamp[1]
+                    final_timestamp = split_only_date[1] + "-" + split_only_date[2] + " at " + split_timestamp[1]
                 
                 fl.write("\n\n@" + comment.username + "\t" + final_timestamp)
                 fl.write("\n" + comment.comment_string)
