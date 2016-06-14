@@ -206,21 +206,39 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
         current_thread = list_of_threads[selected_thread_object]
         sum_of_chars = 0
         com_list = current_thread.list_of_comments
+        package_directory = sublime.packages_path() + '/' + 'datastructurework'
 
-        for comment in reversed(com_list):
-            #self.view.insert(edit, 0, "comment")
-            sum_of_chars = self.view.insert(
-                edit, 0, "\n" + comment.comment_string)
-            split_timestamp = comment.timestamp.split(' ')
-            split_only_date = split_timestamp[0].split('-')
-            if(split_timestamp[0] == str(date.today())):
-                final_timestamp = "Today @ " + split_timestamp[1]
-            elif(split_timestamp[0] == str(date.today() - timedelta(days=1))):
-                final_timestamp = "Yesterday @ " + split_timestamp[1]
-            elif(split_only_date[0] == str(date.today().year)):
-                final_timestamp = split_only_date[1] + "-" + split_only_date[2] + " @ " + split_timestamp[1]
-            self.view.insert(edit, 0, "\n\n\n@" +
-                             comment.username + "\t" + final_timestamp)
+        # for comment in reversed(com_list):
+        #     #self.view.insert(edit, 0, "comment")
+        #     sum_of_chars = self.view.insert(
+        #         edit, 0, "\n" + comment.comment_string)
+        #     split_timestamp = comment.timestamp.split(' ')
+        #     split_only_date = split_timestamp[0].split('-')
+        #     if(split_timestamp[0] == str(date.today())):
+        #         final_timestamp = "Today @ " + split_timestamp[1]
+        #     elif(split_timestamp[0] == str(date.today() - timedelta(days=1))):
+        #         final_timestamp = "Yesterday @ " + split_timestamp[1]
+        #     elif(split_only_date[0] == str(date.today().year)):
+        #         final_timestamp = split_only_date[1] + "-" + split_only_date[2] + " @ " + split_timestamp[1]
+        #     self.view.insert(edit, 0, "\n\n\n@" +
+        #                      comment.username + "\t" + final_timestamp)
+
+        with open(package_directory + '/comments.cbrt', 'w') as fl:
+            for comment in (com_list):
+
+                split_timestamp = comment.timestamp.split(' ')
+                split_only_date = split_timestamp[0].split('-')
+                if(split_timestamp[0] == str(date.today())):
+                    final_timestamp = "Today @ " + split_timestamp[1]
+                elif(split_timestamp[0] == str(date.today() - timedelta(days=1))):
+                    final_timestamp = "Yesterday @ " + split_timestamp[1]
+                elif(split_only_date[0] == str(date.today().year)):
+                    final_timestamp = split_only_date[1] + "-" + split_only_date[2] + " @ " + split_timestamp[1]
+                
+                fl.write("\n@" + comment.username + "\t" + final_timestamp)
+                fl.write("\n"comment.comment_string)
+
+        window.open_file("comments.cbrt")
 
         self.view.set_scratch(True)
         self.view.set_read_only(True)
