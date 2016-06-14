@@ -258,24 +258,24 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
         # assigns the directory of the file to the variable
         # current_file_directory
         current_file_directory = current_file_name_path[0:forward_slash_index]
-        print ("path of file loaded is " + current_file_directory)
-        check_for_git_repo = subprocess.Popen("git rev-parse --is-inside-work-tree", cwd=current_file_directory,
-                                              universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
-        if check_for_git_repo == "true\n":
-            print ("In a valid Git repo")
-            run_plugin = True
-            check_comments_path = current_file_directory + "/Comments"
-            if os.path.exists(check_comments_path):  # check if Comments folder exists
-                list_of_threads = read_multiple_files(current_file_directory)
+        # print ("path of file loaded is " + current_file_directory)
+        # check_for_git_repo = subprocess.Popen("git rev-parse --is-inside-work-tree", cwd=current_file_directory,
+        #                                       universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
+        # if check_for_git_repo == "true\n":
+        #     print ("In a valid Git repo")
+        #     run_plugin = True
+        #     check_comments_path = current_file_directory + "/Comments"
+        #     if os.path.exists(check_comments_path):  # check if Comments folder exists
+        #         list_of_threads = read_multiple_files(current_file_directory)
 
-                # templist = Thread.read_thread()
-                # list_of_threads = Thread.converting_from_file_to_new_list_of_threads(templist)
-        else:
-            print ("Not in a Git repo")
+        #         # templist = Thread.read_thread()
+        #         # list_of_threads = Thread.converting_from_file_to_new_list_of_threads(templist)
+        # else:
+        #     print ("Not in a Git repo")
 
-        for thread in list_of_threads:
-            view.add_regions(thread.thread_key, [
-                             thread.region], 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
+        # for thread in list_of_threads:
+        #     view.add_regions(thread.thread_key, [
+        #                      thread.region], 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
 
 
 class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
