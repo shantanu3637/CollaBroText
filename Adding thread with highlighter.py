@@ -223,7 +223,8 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
         #     self.view.insert(edit, 0, "\n\n\n@" +
         #                      comment.username + "\t" + final_timestamp)
 
-        with open(package_directory + '/comments.cbrt', 'w') as fl:
+        with open(package_directory + '/comments.cbrt', 'w') as fl :
+            
             for comment in (com_list):
 
                 split_timestamp = comment.timestamp.split(' ')
@@ -238,9 +239,9 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
                 fl.write("\n\n@" + comment.username + "\t" + final_timestamp)
                 fl.write("\n" + comment.comment_string)
 
-        window.open_file(package_directory + '/comments.cbrt')
-        comment_view_obj = self.view
-        print(comment_view_obj)
+        print("current view" + str(self.view))
+        comment_view_obj = window.open_file(package_directory + '/comments.cbrt')
+        print("layout_view " + str(comment_view_obj))
 
         #self.view.set_scratch(True)
         #self.view.set_read_only(True)
@@ -258,8 +259,7 @@ class CloseLayoutCommand(sublime_plugin.WindowCommand):
         layout_region = "0"
 
         self.window.focus_view(comment_view_obj)
-        print("comment_view_obj on close" + str(comment_view_obj) + "current view" + str(self.view))
-        self.window.run_command("close_file")
+        self.window.run_command("close")
 
         command_name = "set_layout"
         command_arguments = {"cols": [0, 1.0], "rows": [
@@ -272,32 +272,39 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
         global list_of_threads
         global run_plugin
         global current_editing_file
-        current_editing_file = view
-        print("current editing on load " + str(current_editing_file))        
-        current_file_name_path = view.file_name()
-        forward_slash_index = current_file_name_path.rfind(
-            '/', 0, len(current_file_name_path))  # finds index of last forward slash
-        # assigns the directory of the file to the variable
-        # current_file_directory
-        current_file_directory = current_file_name_path[0:forward_slash_index]
-        print ("path of file loaded is " + current_file_directory)
-        check_for_git_repo = subprocess.Popen("git rev-parse --is-inside-work-tree", cwd=current_file_directory,
-                                              universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
-        if check_for_git_repo == "true\n":
-            print ("In a valid Git repo")
-            run_plugin = True
-            check_comments_path = current_file_directory + "/Comments"
-            if os.path.exists(check_comments_path):  # check if Comments folder exists
-                list_of_threads = read_multiple_files(current_file_directory)
 
-                # templist = Thread.read_thread()
-                # list_of_threads = Thread.converting_from_file_to_new_list_of_threads(templist)
-        else:
-            print ("Not in a Git repo")
+        file_directory = view.file_name()
+        forward_slash_index_temp = file_directory.rfind('/', 0, len(file_directory))
+        file_name = file_directory[forward_slash_index_temp + 1:len(file_directory)]
+        print("file name " + file_name)
 
-        for thread in list_of_threads:
-            view.add_regions(thread.thread_key, [
-                             thread.region], 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
+        if file_name != "comments.cbrt" :
+            current_editing_file = view
+            print("current editing on load " + str(current_editing_file))        
+            current_file_name_path = view.file_name()
+            forward_slash_index = current_file_name_path.rfind(
+                '/', 0, len(current_file_name_path))  # finds index of last forward slash
+            # assigns the directory of the file to the variable
+            # current_file_directory
+            current_file_directory = current_file_name_path[0:forward_slash_index]
+            print ("path of file loaded is " + current_file_directory)
+            check_for_git_repo = subprocess.Popen("git rev-parse --is-inside-work-tree", cwd=current_file_directory,
+                                                  universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
+            if check_for_git_repo == "true\n":
+                print ("In a valid Git repo")
+                run_plugin = True
+                check_comments_path = current_file_directory + "/Comments"
+                if os.path.exists(check_comments_path):  # check if Comments folder exists
+                    list_of_threads = read_multiple_files(current_file_directory)
+
+                    # templist = Thread.read_thread()
+                    # list_of_threads = Thread.converting_from_file_to_new_list_of_threads(templist)
+            else:
+                print ("Not in a Git repo")
+
+            for thread in list_of_threads:
+                view.add_regions(thread.thread_key, [
+                                 thread.region], 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
 
 
 class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
@@ -340,7 +347,7 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
         global comment_view_obj
         global current_editing_file
 
-        print("editing file " + str(current_editing_file) + "\nclosed view " + str(view) + "\ncomment_view" + str(comment_view_obj))
+        #print("editing file " + str(current_editing_file) + "\nclosed view " + str(view) + "\ncomment_view" + str(comment_view_obj))
         
         if (view == comment_view_obj):
             sublime.status_message("Closing UI so no action")
