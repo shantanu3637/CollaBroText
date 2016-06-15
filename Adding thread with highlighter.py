@@ -190,7 +190,7 @@ class HighlightChange(sublime_plugin.EventListener):
         window.run_command("highlight_and_display")
 
 
-    thro = throttle(seconds=10)
+    thro = throttle(seconds=0.5)
     on_selection_modified = thro(on_selection_modified)
 
 
