@@ -1,10 +1,12 @@
 List of features tbd:
-  ☐ Coloring of comments @critical
+  ✔ Coloring of comments @critical @done (16-06-14 12:44)
   ☐ Matching which regions (highlight) correspond to which file @critical
   ✔ Formatting of date (today, yesterday)  @high @done (16-06-11 20:03)
   ☐ Editing comments @low
   ☐ Resolving Threads @low
   ☐ When closing comment UI, reset variables and stuff
+
+  ☐ Check the region of a selection while inserting comment and after inserting new comment move cursor out of it and back into it to make the region highlighted yellow.
 
   ✔ Make on_selection_modified stuff into a function(command) that can be called @done (16-06-13 17:11)
   ✔ Refresh the Comment UI immediately when a new comment/thread is created/added @done (16-06-13 17:11)
@@ -14,14 +16,20 @@ List of features tbd:
 Things to complete for coloring comments:
   ✔ CBRT file: keep a blank file @done (16-06-13 17:09)
   ✔ open file when opening layout for comments  @done (16-06-13 17:09)
-  ☐ wipe file when UI is closed
+  ✔ wipe file when UI is closed @done (16-06-15 14:40)
 
     tmlanguage and tmTheme stuff:
-      ✔ Proper RegEx checking  @done (16-06-13 17:09)
-      ✔ Edit theme to change background color @done (16-06-13 17:09)
+      ☐ Proper RegEx checking for time and date
+      ☐ Edit theme to change background color
 
   Stretch Goals for Coloring/UI:
     ☐ Making the first comment in a thread differently colored from the other comments
     ☐ Add a slight indentation (maybe 2 spaces) for all other comments after the first comment
+
+ Features/Fixes from last meeting with Saurabh:
+   ☐ If key binding for add_comment/thread is pressed when cursor is in a single location (do a check if a==b (of the region)) . If you are in a thread then attempt to add comment, else throw status message saying "not in a thread/highlighted region" @high
+   ☐ 
+
+
 
 
