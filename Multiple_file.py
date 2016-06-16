@@ -55,19 +55,9 @@ class Thread:
 
 
 	@staticmethod
-	def WriteCreateThreadFolder(pcurrent_file_directory, plist_of_threads, pProject_directory):
+	def WriteCreateThreadFolder(pcurrent_file_directory, plist_of_threads):
 
-
-
-		for dirpath, dirnames, filenames in os.walk (pProject_directory): 
-			os.mkdir (os.path.join (pProject_directory + '/Project_Comments', dirpath[1+len (pProject_directory):])) 
-
-		
-
-		filevariable  = "/name" 
-
-
-		thread_path = pcurrent_file_directory + filevariable + 'Comments' #Checks if a Comments folder is present
+		thread_path = pcurrent_file_directory + '/Comments' #Checks if a Comments folder is present
 
 		if os.path.exists(thread_path):
 			shutil.rmtree(thread_path)
@@ -76,7 +66,7 @@ class Thread:
 		for x in plist_of_threads:
 			# Shantanu while redoing, check this line to see if it is needed.
 			
-			thread_path = pcurrent_file_directory + filevariable +  'Comments' #Checks if a Comments folder is present
+			thread_path = pcurrent_file_directory + '/Comments' #Checks if a Comments folder is present
 
 
 
@@ -86,7 +76,7 @@ class Thread:
 			# 	shutil.rmtree(thread_path)
 			# 	os.makedirs(thread_path)
 
-			thread_path = pcurrent_file_directory + filevariable + 'Comments' + '/' + str(x.thread_key) #Creates a folder for a thread
+			thread_path = pcurrent_file_directory + '/' + 'Comments' + '/' + str(x.thread_key) #Creates a folder for a thread
 
 			# if not os.path.exists(thread_path):
 			# 	os.makedirs(thread_path)
