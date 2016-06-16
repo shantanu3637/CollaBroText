@@ -66,11 +66,26 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         global current_editing_file
-        current_editing_file = self.view
+        self.in_highlight = False
+        self.current_highlighted_region = current_editing_file.sel()
+        print("current highlight = "+str(self.current_highlighted_region[0]))
 
-        self.view.window().show_input_panel("Enter your comment:",
-                                            ' ', self.on_done, None, None)
-        # sublime.set_timeout(self.close_view,1000)
+
+
+        for thread_object in list_of_threads:
+            region_from_object = current_editing_file.get_regions(thread_object.thread_key)  # thread_key gives the UUID
+            if region_from_object[0].contains(self.current_highlighted_region[0]):
+                self.in_highlight = True
+
+        current_editing_file = self.view
+        if(self.current_highlighted_region[0].a==self.current_highlighted_region[0].b):
+            if (self.in_highlight == True):
+                self.view.window().show_input_panel("Enter your comment:", ' ', self.on_done, None, None)
+            else:
+                sublime.message_dialog("You are trying to add a comment without selecting a region! Please select a region.")
+        else:
+            self.view.window().show_input_panel("Enter your comment:", ' ', self.on_done, None, None)
+
 
     def add_new_thread(self, puser_input):
 
@@ -78,12 +93,29 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
 
         comment = str(puser_input)
 
-        tobj = Thread(self.view.sel()[
-                      0], comment_string=comment, list_of_comments=[])
+        tobj = Thread(self.view.sel()[0], comment_string=comment, list_of_comments=[])
         for region in self.view.sel():
             self.view.add_regions(
                 tobj.thread_key, [region], 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
         tobj.add_thread(list_of_threads)
+
+        #move cursor in and out of newly created region(highlight) so that it gets highlighted properly
+        window = sublime.active_window()
+        row_number = self.view.rowcol(self.view.sel()[0].begin())[0]
+        print("row no" + str(row_number))
+        
+        col_number = self.view.rowcol(self.view.sel()[0].begin())[1]
+
+        print("col_no"+str(col_number))
+        window.run_command(
+                    "goto_row_col",
+                    {"row": row_number+1, "col":col_number+1 }
+                )
+        window.run_command(
+            "goto_row_col",
+            {"row": row_number+1, "col":col_number+2 }
+        )
+
 
         # print(list_of_threads[0].list_of_comments[0].comment_string)
 
@@ -97,29 +129,34 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
                 x.add_comment(comment)
 
     def on_done(self, user_input):
-
-        # comment = str(user_input)
-        # print comment
         window = sublime.active_window()
-        in_highlight = False
 
-        # add_new_thread(comment)
-        global current_editing_file
-
-        for thread_object in list_of_threads:
-            region_from_object = current_editing_file.get_regions(
-                thread_object.thread_key)  # thread_key gives the UUID
-            region = current_editing_file.sel()
-            if region_from_object[0].contains(region[0]):
-                in_highlight = True
-
-        if in_highlight == False:
+        if self.in_highlight == False:
             self.add_new_thread(user_input)
         else:
             self.add_new_comment(user_input)
             window.run_command("close_layout")
 
         window.run_command("highlight_and_display")
+
+
+
+class GotoRowColCommand(sublime_plugin.TextCommand):
+        def run(self, edit, row, col):
+                print("INFO: Input: " + str({"row": row, "col": col}))
+                # rows and columns are zero based, so subtract 1
+                # convert text to int
+                (row, col) = ( int( row ) - 1 , int( col ) - 1 )
+                if row > -1 and col > -1:
+                        # col may be greater than the row length
+                        currentRowLength = len( self.view.substr( self.view.full_line( self.view.text_point( row , 0 ) ) ) ) -1
+                        col = min( col , currentRowLength )
+                        print("INFO: Calculated: " + str({"row": row, "col": col}))
+                        self.view.sel().clear()
+                        self.view.sel().add(sublime.Region(self.view.text_point(row, col)))
+                        self.view.show(self.view.text_point(row, col))
+                else:
+                        print("ERROR: The Row or the Column arguments are less than one. Both must be >=1")
 
 # Command is called to highlight and display the comments
 # Called by on_selection_modified and add_thread_comment
