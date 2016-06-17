@@ -273,15 +273,15 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
                 elif(split_only_date[0] == str(date.today().year)):
                     timeperiod = split_only_date[1] + "-" + split_only_date[2]
                 else :
-                    timeperiod = split_timestamp[0]
-
+                    timeperiod = split_only_date[1] + "-" + split_only_date[2] + "-" + split_only_date[3]
+                
                 fl.write("\n\n" + timeperiod)
                 fl.write("\n@" + comment.username + "\t" + split_timestamp[1])
                 fl.write("\n" + comment.comment_string)
 
-        print("current view" + str(self.view))
+        #print("current view" + str(self.view))
         comment_view_obj = window.open_file(package_directory + '/comments.cbrt')
-        print("layout_view " + str(comment_view_obj))
+        #print("layout_view " + str(comment_view_obj))
 
         #self.view.set_scratch(True)
         #self.view.set_read_only(True)
