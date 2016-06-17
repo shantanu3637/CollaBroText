@@ -2,7 +2,7 @@ import sublime
 import sublime_plugin
 import os
 import subprocess
-from .Multiple_file import *
+from .datastructure import *
 
 from datetime import *
 from functools import wraps

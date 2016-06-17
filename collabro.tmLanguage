@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>fileTypes</key>
+	<array>
+		<string>cbrt</string>
+	</array>
+	<key>name</key>
+	<string>Collabro Syntax</string>
+	<key>patterns</key>
+	<array>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.username.cbrt</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.timestamp.cbrt</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>This is the timestamp</string>
+			<key>match</key>
+			<string>^(@[A-Za-z0-9]+)(\t)([A-Za-z0-9]+)</string>
+			<key>name</key>
+			<string>keyword.complex.cbrt</string>
+		</dict>
+	</array>
+	<key>scopeName</key>
+	<string>text.collabro</string>
+	<key>uuid</key>
+	<string>46d8d31b-d8cc-4b8d-906a-2ea81d88590f</string>
+</dict>
+</plist>
