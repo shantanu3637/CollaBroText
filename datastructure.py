@@ -78,13 +78,13 @@ class Thread:
 
 			thread_path = pcurrent_file_directory + '/' + 'Comments' + '/' + str(x.thread_key) #Creates a folder for a thread
 
-			# if not os.path.exists(thread_path):
-			# 	os.makedirs(thread_path)
-			# else:
-			# 	shutil.rmtree(thread_path)
-			# 	os.makedirs(thread_path)
+			if not os.path.exists(thread_path):
+				os.makedirs(thread_path)
+			else:
+				shutil.rmtree(thread_path)
+				os.makedirs(thread_path)
 
-			os.makedirs(thread_path)
+			#os.makedirs(thread_path)
 
 			with open(thread_path + '/' + '1' + '.txt', 'w') as fl:
 				fl.write( str(x.region) +"\n" + x.thread_key + "\n" + str(x.is_resolved))
