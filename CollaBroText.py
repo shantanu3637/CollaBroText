@@ -267,13 +267,16 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
                 split_timestamp = comment.timestamp.split(' ')
                 split_only_date = split_timestamp[0].split('-')
                 if(split_timestamp[0] == str(date.today())):
-                    final_timestamp = "Today at " + split_timestamp[1]
+                    timeperiod = "Today "
                 elif(split_timestamp[0] == str(date.today() - timedelta(days=1))):
-                    final_timestamp = "Yesterday at " + split_timestamp[1]
+                    timeperiod = "Yesterday "
                 elif(split_only_date[0] == str(date.today().year)):
-                    final_timestamp = split_only_date[1] + "-" + split_only_date[2] + " at " + split_timestamp[1]
+                    timeperiod = split_only_date[1] + "-" + split_only_date[2]
+                else :
+                    timeperiod = split_timestamp[0]
                 
-                fl.write("\n\n@" + comment.username + "\t" + final_timestamp)
+                fl.write("\n\n" + timeperiod)
+                fl.write("\n@" + comment.username + "\t" + split_timestamp[1])
                 fl.write("\n" + comment.comment_string)
 
         print("current view" + str(self.view))
