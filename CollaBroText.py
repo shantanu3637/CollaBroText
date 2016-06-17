@@ -243,7 +243,7 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
         current_thread = list_of_threads[selected_thread_object]
         sum_of_chars = 0
         com_list = current_thread.list_of_comments
-        package_directory = sublime.packages_path() + '/' + 'datastructurework'
+        package_directory = sublime.packages_path() + '/' + 'CollaBroText'
 
         # for comment in reversed(com_list):
         #     #self.view.insert(edit, 0, "comment")
