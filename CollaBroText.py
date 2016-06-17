@@ -103,7 +103,7 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
         window = sublime.active_window()
         row_number = self.view.rowcol(self.view.sel()[0].begin())[0]
         print("row no" + str(row_number))
-        
+
         col_number = self.view.rowcol(self.view.sel()[0].begin())[1]
 
         print("col_no"+str(col_number))
@@ -222,7 +222,7 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
 # NEED TO FIX HIGHLIGHT AFTER CLOSING LAYOUT
 class HighlightChange(sublime_plugin.EventListener):
     def on_selection_modified(self, view):
-        
+
         window = sublime.active_window()
         window.run_command("highlight_and_display")
 
@@ -238,7 +238,7 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
 
         global comment_view_obj
 
-        
+
         # sublime.status_message("view id of UI is set here: "+str(comment_view_obj))
         current_thread = list_of_threads[selected_thread_object]
         sum_of_chars = 0
@@ -261,7 +261,7 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
         #                      comment.username + "\t" + final_timestamp)
 
         with open(package_directory + '/comments.cbrt', 'w') as fl :
-            
+
             for comment in (com_list):
 
                 split_timestamp = comment.timestamp.split(' ')
@@ -274,7 +274,7 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
                     timeperiod = split_only_date[1] + "-" + split_only_date[2]
                 else :
                     timeperiod = split_timestamp[0]
-                
+
                 fl.write("\n\n" + timeperiod)
                 fl.write("\n@" + comment.username + "\t" + split_timestamp[1])
                 fl.write("\n" + comment.comment_string)
@@ -320,7 +320,7 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
 
         if file_name != "comments.cbrt" :
             current_editing_file = view
-            print("current editing on load " + str(current_editing_file))        
+            print("current editing on load " + str(current_editing_file))
             current_file_name_path = view.file_name()
             forward_slash_index = current_file_name_path.rfind(
                 '/', 0, len(current_file_name_path))  # finds index of last forward slash
@@ -371,7 +371,6 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
 
             sublime.status_message(str(subprocess.Popen("git status", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()))
 
-            pull_message = subprocess.Popen("git pull origin master", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
             sublime.status_message(str(pull_message))
             subprocess.Popen("git add --all", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
             sublime.status_message("Git add is done")
@@ -380,6 +379,7 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
 
             commit_message = subprocess.Popen("git commit -m\"commit to git staging area\"", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
             sublime.status_message(str(commit_message))
+            pull_message = subprocess.Popen("git pull origin master", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
 
             push_returned_message = subprocess.Popen("git push origin master", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
             sublime.message_dialog("Pushed to Git")
@@ -389,7 +389,7 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
         global current_editing_file
 
         #print("editing file " + str(current_editing_file) + "\nclosed view " + str(view) + "\ncomment_view" + str(comment_view_obj))
-        
+
         if (view == comment_view_obj):
             sublime.status_message("Closing UI so no action")
         elif(view == current_editing_file):
