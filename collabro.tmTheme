@@ -11,11 +11,13 @@
       <key>settings</key>
       <dict>
          <key>background</key>
-         <string>#212121</string>
+         <string>#ffff99</string>
          <key>foreground</key>
-         <string>#ffffff</string>
+         <string>#000000</string>
          <key>caret</key>
          <string>#686831</string>
+         <key>lineHighlight</key>
+         <string>#ffff99</string>
       </dict>
       </dict> 
 
@@ -27,7 +29,7 @@
        <key>settings</key>
        <dict>
         <key>foreground</key>
-        <string>#cccc00</string>
+        <string>#e63900</string>
        </dict>
      </dict>
      
@@ -39,9 +41,22 @@
        <key>settings</key>
        <dict>
         <key>foreground</key>
-        <string>#cc00cc</string>
+        <string>#999999</string>
        </dict>
       </dict>
+
+      <dict>
+       <key>name</key>
+       <string>Timestamp</string>
+       <key>scope</key>
+       <string>keyword.timeperiod.cbrt</string>
+       <key>settings</key>
+       <dict>
+        <key>foreground</key>
+        <string>#2196F3</string>
+       </dict>
+      </dict>
+      
    
    </array>
    <key>uuid</key>

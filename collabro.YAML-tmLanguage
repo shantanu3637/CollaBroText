@@ -8,8 +8,12 @@ uuid: 46d8d31b-d8cc-4b8d-906a-2ea81d88590f
 patterns:
 - comment: This is the timestamp
   name: keyword.complex.cbrt
-  match: ^(@[A-Za-z0-9]+)(\t)([A-Za-z0-9]+)
+  match: ^(@[A-Za-z0-9]+)(\t)([0-9][0-9]:[0-9][0-9]:[0-9][0-9])
   captures:
     '1' : {name: keyword.username.cbrt}
     '3' : {name: keyword.timestamp.cbrt}
+
+- comment: time period
+  name: keyword.timeperiod.cbrt
+  match: ^([A-Za-z]+|[0-9][0-9]-[0-9][0-9])
 ...
