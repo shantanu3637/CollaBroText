@@ -1,4 +1,0 @@
-Kahlil
-82d70136-e6db-4074-83a4-15abdaea1d72
- Average fault tolerance is the deviation from the average time
-2016-06-17 13:24:09

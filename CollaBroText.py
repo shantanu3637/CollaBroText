@@ -68,7 +68,7 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
         global current_editing_file
         self.in_highlight = False
         self.current_highlighted_region = current_editing_file.sel()
-        print("current highlight = "+str(self.current_highlighted_region[0]))
+        # print("current highlight = "+str(self.current_highlighted_region[0]))
 
 
 
@@ -274,7 +274,7 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
                     timeperiod = split_only_date[1] + "-" + split_only_date[2]
                 else :
                     timeperiod = split_only_date[1] + "-" + split_only_date[2] + "-" + split_only_date[3]
-                
+
                 fl.write("\n\n" + timeperiod)
                 fl.write("\n@" + comment.username + "\t" + split_timestamp[1])
                 fl.write("\n" + comment.comment_string)
