@@ -384,14 +384,14 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
             push_returned_message = subprocess.Popen("git push origin master", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
             sublime.message_dialog("Pushed to Git")
 
-    def on_pre_close(self, view):
-        global comment_view_obj
-        global current_editing_file
+    # def on_pre_close(self, view):
+    #     global comment_view_obj
+    #     global current_editing_file
 
-        #print("editing file " + str(current_editing_file) + "\nclosed view " + str(view) + "\ncomment_view" + str(comment_view_obj))
+    #     #print("editing file " + str(current_editing_file) + "\nclosed view " + str(view) + "\ncomment_view" + str(comment_view_obj))
 
-        if (view == comment_view_obj):
-            sublime.status_message("Closing UI so no action")
-        elif(view == current_editing_file):
-            current_window = sublime.active_window()
-            current_window.run_command("close_layout")
+    #     if (view == comment_view_obj):
+    #         sublime.status_message("Closing UI so no action")
+    #     elif(view == current_editing_file):
+    #         current_window = sublime.active_window()
+    #         current_window.run_command("close_layout")
