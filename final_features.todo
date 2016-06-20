@@ -26,10 +26,20 @@ Features/Fixes from last meeting with Saurabh:
    ☐ Mimic project directory structure in .comments folder where needed 
    ☐ Matching which regions (highlight) correspond to which file @critical
    ☐ When closing comment UI, reset variables and stuff
-   ☐ Fix the on_pre_close function so that it checks very specifically for the comment UI and only closes that, if open
+   ☐ Fix the on_pre_close event hook so that it checks very specifically for the comment UI and only closes that, if open
    ☐ Add blank space at the start of every comment in the code, do not rely on user not to backspace it in the input panel
    ☐ Indent all other comments apart from 1st comment in a thread (by maybe 2 spaces @low
-   ☐ 
+   ☐ Fix problem caused when user "hot_exits" and restarts sublime text : Reload all files or specific files ? If needed, add a key binding to reload current file/all files. 
+   ☐ Take care of all errors being currently thrown in console that do not break plugin
+   ☐ Add separate key binding to sync with git ? (when user just wants to pull comments from another user)
+
+     Options that need to be added in User Preferences:
+     ☐ Add option for user to add custom commit message if he wants to @critical
+     ☐ Add option in user preferences for user to turn off plugin and implement the needed if/else conditions for this @high
+     ☐ Add option in user preferences for user to set after how many commits to push 
+     ☐ Add option in user preferences for user to set hex value, to change background color of comment UI @low
+
+   ☐ Do rigorous testing of plugin to check if any merge conflicts are being caused that aren't taken care of automatically
 
  
 
