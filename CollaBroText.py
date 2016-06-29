@@ -33,9 +33,10 @@ class ShiftView(sublime_plugin.EventListener):
     def on_activated(self, view):
         current_view_id = view.id()
 
-        global data_struct, list_of_threads
-        if current_view_id in data_struct.keys():
-            list_of_threads = data_struct[current_view_id]
+        global data_struct, list_of_threads, current_editing_file
+        list_of_threads = data_struct[current_view_id]
+        current_editing_file = view
+
 
 
 
@@ -78,6 +79,7 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         global current_editing_file, list_of_threads
+        current_editing_file = self.view
         self.in_highlight = False
         self.current_highlighted_region = current_editing_file.sel()
         # print("current highlight = "+str(self.current_highlighted_region[0]))
@@ -103,6 +105,9 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
 
         global comment, window, list_of_threads, data_struct
 
+        if self.view.id() not in data_struct.keys():
+            list_of_threads = []
+
         comment = str(puser_input)
 
         tobj = Thread(self.view.sel()[0], comment_string=comment, list_of_comments=[])
@@ -112,6 +117,7 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
         tobj.add_thread(list_of_threads)
 
         data_struct[self.view.id()] = list_of_threads
+        print(str(data_struct[self.view.id()]))
 
         #move cursor in and out of newly created region(highlight) so that it gets highlighted properly
         window = sublime.active_window()
@@ -184,8 +190,17 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
         global current_editing_file
         global window, list_of_threads
 
+
         # need window obj to call other commands
         window = sublime.active_window()
+
+        if self.view.id() not in data_struct.keys():
+            list_of_threads = []
+
+        else :
+            list_of_threads = data_struct[self.view.id()]
+
+        print(str(list_of_threads))
         #current_view_obj = current_editing_file
 
         # if current cursor position is contained in a region in file and no layout is open then open layout
@@ -200,6 +215,7 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
             # print(view.id())
             # print(thread_object.thread_key)
             # print(region_from_object)
+            print(str(region_from_object))
             if region_from_object[0].contains(currently_selected_region[0]):
                 thread_index = list_of_threads.index(thread_object)
                 current_editing_file.add_regions(
@@ -381,6 +397,8 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
             # current_file_directory
             current_file_directory = current_file_name_path[
                 0:forward_slash_index]
+
+            directory_of_git_folder = subprocess.Popen("git rev-parse --show-toplevel", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
 
             Thread.WriteCreateThreadFolder(
             current_file_directory, list_of_threads)
