@@ -30,19 +30,24 @@ data_struct = {}
 # Throttle class to run on selection modifier
 
 class ShiftView(sublime_plugin.EventListener):
-    def on_activated(self, view):
-        current_view_id = view.id()
+    def on_activated(self,view):
+        window = sublime.active_window()
+        window.run_command('view_changed')
+
+            
+
+class ViewChangedCommand(sublime_plugin.TextCommand):
+    def run(self, view):
+        current_view_id = self.view.id()
 
 
         global data_struct, list_of_threads, current_editing_file
 
-        current_editing_file = view
+        current_editing_file = self.view
         try :
             list_of_threads = data_struct[current_view_id]
         except KeyError :
             pass
-            
-       
 
 
 
@@ -207,10 +212,9 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
         else :
             list_of_threads = data_struct[self.view.id()]
 
-        print(str(current_editing_file.id()))
-        print(str(self.view.id()))
+        # print(str(current_editing_file))
         
-
+        # current_editing_file = self.view
         # print(str(list_of_threads))
         #current_view_obj = current_editing_file
 
@@ -219,13 +223,14 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
 
         # Need to iterate through the full list due to the case when moving from one highlighted region to another`
         for thread_object in list_of_threads:
-
+            print("Current editing file: "+ str(current_editing_file))
             region_from_object = current_editing_file.get_regions(thread_object.thread_key)  # thread_key gives the UUID
             currently_selected_region = current_editing_file.sel()
             # print(current_editing_file.id())
             # print(view.id())
-            # print(thread_object.thread_key)
-            # print(region_from_object)
+            print("Thread object key : "+ str(thread_object.thread_key))
+            print("region from object : "+ str(region_from_object[0]))
+            print("currenty selected region : "+str(currently_selected_region[0]))
             if region_from_object[0].contains(currently_selected_region[0]):
                 thread_index = list_of_threads.index(thread_object)
                 current_editing_file.add_regions(
@@ -264,7 +269,7 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
 # NEED TO FIX HIGHLIGHT AFTER CLOSING LAYOUT
 class HighlightChange(sublime_plugin.EventListener):
     def on_selection_modified(self, view):
-
+        print("View in on_selection_mod"+str(view)+" and id is "+str(view.id()))
         window = sublime.active_window()
         window.run_command("highlight_and_display")
 
