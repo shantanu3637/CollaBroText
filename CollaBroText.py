@@ -20,11 +20,23 @@ layout_region = "0"
 global list_of_threads
 list_of_threads = []
 
+global data_struct
+data_struct = {}
+
 # class ExampleCommand(sublime_plugin.TextCommand):
 # 	def run(self, edit):
 # 		self.view.insert(edit, 0, "Hello, World!")
 
 # Throttle class to run on selection modifier
+
+class ShiftView(sublime_plugin.EventListener):
+    def on_activated(self, view):
+        current_view_id = view.id()
+
+        global data_struct, list_of_threads
+        if current_view_id in data_struct.keys():
+            list_of_threads = data_struct[current_view_id]
+
 
 
 class throttle(object):
@@ -65,7 +77,7 @@ class PrintTestCommand(sublime_plugin.TextCommand):
 class AddThreadCommentCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
-        global current_editing_file
+        global current_editing_file, list_of_threads
         self.in_highlight = False
         self.current_highlighted_region = current_editing_file.sel()
         # print("current highlight = "+str(self.current_highlighted_region[0]))
@@ -89,7 +101,7 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
 
     def add_new_thread(self, puser_input):
 
-        global comment, window
+        global comment, window, list_of_threads, data_struct
 
         comment = str(puser_input)
 
@@ -98,6 +110,8 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
             self.view.add_regions(
                 tobj.thread_key, [region], 'comment', 'dot', sublime.HIDE_ON_MINIMAP)
         tobj.add_thread(list_of_threads)
+
+        data_struct[self.view.id()] = list_of_threads
 
         #move cursor in and out of newly created region(highlight) so that it gets highlighted properly
         window = sublime.active_window()
@@ -122,6 +136,8 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
     def add_new_comment(self, puser_input):
 
         comment = str(puser_input)
+
+        global list_of_threads
 
         for x in list_of_threads:
             if (x.thread_key == layout_region):
@@ -166,7 +182,7 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
         # layout(UI) is on or off (open or not)
         global layout_region        # if the layout is open, tells you which region it corresponds to
         global current_editing_file
-        global window
+        global window, list_of_threads
 
         # need window obj to call other commands
         window = sublime.active_window()
@@ -236,7 +252,7 @@ class HighlightChange(sublime_plugin.EventListener):
 class DisplayCommentsCommand(sublime_plugin.TextCommand):
     def run(self, edit, selected_thread_object):
 
-        global comment_view_obj
+        global comment_view_obj, list_of_threads
 
 
         # sublime.status_message("view id of UI is set here: "+str(comment_view_obj))
