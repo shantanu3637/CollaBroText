@@ -54,10 +54,64 @@ class Thread:
 			json.dump([ThreadEncoder(indent = 1).default(x) for x in plist_of_threads], f, cls = ThreadEncoder, indent = 1)
 
 
-	@staticmethod
-	def WriteCreateThreadFolder(pcurrent_file_directory, plist_of_threads):
+	# @staticmethod
+	# def WriteCreateThreadFolder(pcurrent_file_directory, plist_of_threads):
 
-		thread_path = pcurrent_file_directory + '/Comments' #Checks if a Comments folder is present
+	# 	thread_path = pcurrent_file_directory + '/Comments' #Checks if a Comments folder is present
+
+	# 	if os.path.exists(thread_path):
+	# 		shutil.rmtree(thread_path)
+	# 		os.makedirs(thread_path)
+
+	# 	for x in plist_of_threads:
+	# 		# Shantanu while redoing, check this line to see if it is needed.
+			
+	# 		thread_path = pcurrent_file_directory + '/Comments' #Checks if a Comments folder is present
+
+
+
+	# 		# if not os.path.exists(thread_path):
+	# 		# 	os.makedirs(thread_path)
+	# 		# else:
+	# 		# 	shutil.rmtree(thread_path)
+	# 		# 	os.makedirs(thread_path)
+
+	# 		thread_path = pcurrent_file_directory + '/' + 'Comments' + '/' + str(x.thread_key) #Creates a folder for a thread
+
+	# 		if not os.path.exists(thread_path):
+	# 			os.makedirs(thread_path)
+	# 		else:
+	# 			shutil.rmtree(thread_path)
+	# 			os.makedirs(thread_path)
+
+	# 		#os.makedirs(thread_path)
+
+	# 		with open(thread_path + '/' + '1' + '.txt', 'w') as fl:
+	# 			fl.write( str(x.region) +"\n" + x.thread_key + "\n" + str(x.is_resolved))
+	# 		for y in x.list_of_comments:
+	# 			with open(thread_path + '/' + y.timestamp + '.txt', 'w') as fl:
+	# 				fl.write(y.username + '\n' + y.comment_key + '\n' + y.comment_string + "\n" +y.timestamp)
+
+
+
+
+
+
+
+	@staticmethod
+	def WriteCreateThreadFolder(pcurrent_file_directory, plist_of_threads, pProject_directory):
+
+
+
+		for dirpath, dirnames, filenames in os.walk (pProject_directory): 
+			os.mkdir (os.path.join (pProject_directory + '/Project_Comments', dirpath[1+len (pProject_directory):])) 
+
+		
+
+		filevariable  = pcurrent_file_directory.split('/')[-1] 
+
+
+		thread_path = pcurrent_file_directory + filevariable + 'Comments' #Checks if a Comments folder is present
 
 		if os.path.exists(thread_path):
 			shutil.rmtree(thread_path)
@@ -66,7 +120,7 @@ class Thread:
 		for x in plist_of_threads:
 			# Shantanu while redoing, check this line to see if it is needed.
 			
-			thread_path = pcurrent_file_directory + '/Comments' #Checks if a Comments folder is present
+			thread_path = pcurrent_file_directory + filevariable +  'Comments' #Checks if a Comments folder is present
 
 
 
@@ -76,21 +130,38 @@ class Thread:
 			# 	shutil.rmtree(thread_path)
 			# 	os.makedirs(thread_path)
 
-			thread_path = pcurrent_file_directory + '/' + 'Comments' + '/' + str(x.thread_key) #Creates a folder for a thread
+			thread_path = pcurrent_file_directory + filevariable + 'Comments' + '/' + str(x.thread_key) #Creates a folder for a thread
 
-			if not os.path.exists(thread_path):
-				os.makedirs(thread_path)
-			else:
-				shutil.rmtree(thread_path)
-				os.makedirs(thread_path)
+			# if not os.path.exists(thread_path):
+			# 	os.makedirs(thread_path)
+			# else:
+			# 	shutil.rmtree(thread_path)
+			# 	os.makedirs(thread_path)
 
-			#os.makedirs(thread_path)
+			os.makedirs(thread_path)
 
 			with open(thread_path + '/' + '1' + '.txt', 'w') as fl:
 				fl.write( str(x.region) +"\n" + x.thread_key + "\n" + str(x.is_resolved))
 			for y in x.list_of_comments:
 				with open(thread_path + '/' + y.timestamp + '.txt', 'w') as fl:
 					fl.write(y.username + '\n' + y.comment_key + '\n' + y.comment_string + "\n" +y.timestamp)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	#@staticmethod

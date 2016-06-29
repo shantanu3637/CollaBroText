@@ -33,9 +33,16 @@ class ShiftView(sublime_plugin.EventListener):
     def on_activated(self, view):
         current_view_id = view.id()
 
+
         global data_struct, list_of_threads, current_editing_file
-        list_of_threads = data_struct[current_view_id]
+
         current_editing_file = view
+        try :
+            list_of_threads = data_struct[current_view_id]
+        except KeyError :
+            pass
+            
+       
 
 
 
@@ -117,16 +124,16 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
         tobj.add_thread(list_of_threads)
 
         data_struct[self.view.id()] = list_of_threads
-        print(str(data_struct[self.view.id()]))
+        #print(str(data_struct[self.view.id()]))
 
         #move cursor in and out of newly created region(highlight) so that it gets highlighted properly
         window = sublime.active_window()
         row_number = self.view.rowcol(self.view.sel()[0].begin())[0]
-        print("row no" + str(row_number))
+        #print("row no" + str(row_number))
 
         col_number = self.view.rowcol(self.view.sel()[0].begin())[1]
 
-        print("col_no"+str(col_number))
+        #print("col_no"+str(col_number))
         window.run_command(
                     "goto_row_col",
                     {"row": row_number+1, "col":col_number+1 }
@@ -165,7 +172,7 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
 
 class GotoRowColCommand(sublime_plugin.TextCommand):
         def run(self, edit, row, col):
-                print("INFO: Input: " + str({"row": row, "col": col}))
+                #print("INFO: Input: " + str({"row": row, "col": col}))
                 # rows and columns are zero based, so subtract 1
                 # convert text to int
                 (row, col) = ( int( row ) - 1 , int( col ) - 1 )
@@ -173,7 +180,7 @@ class GotoRowColCommand(sublime_plugin.TextCommand):
                         # col may be greater than the row length
                         currentRowLength = len( self.view.substr( self.view.full_line( self.view.text_point( row , 0 ) ) ) ) -1
                         col = min( col , currentRowLength )
-                        print("INFO: Calculated: " + str({"row": row, "col": col}))
+                        #print("INFO: Calculated: " + str({"row": row, "col": col}))
                         self.view.sel().clear()
                         self.view.sel().add(sublime.Region(self.view.text_point(row, col)))
                         self.view.show(self.view.text_point(row, col))
@@ -200,7 +207,11 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
         else :
             list_of_threads = data_struct[self.view.id()]
 
-        print(str(list_of_threads))
+        print(str(current_editing_file.id()))
+        print(str(self.view.id()))
+        
+
+        # print(str(list_of_threads))
         #current_view_obj = current_editing_file
 
         # if current cursor position is contained in a region in file and no layout is open then open layout
@@ -215,7 +226,6 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
             # print(view.id())
             # print(thread_object.thread_key)
             # print(region_from_object)
-            print(str(region_from_object))
             if region_from_object[0].contains(currently_selected_region[0]):
                 thread_index = list_of_threads.index(thread_object)
                 current_editing_file.add_regions(
@@ -400,8 +410,7 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
 
             directory_of_git_folder = subprocess.Popen("git rev-parse --show-toplevel", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
 
-            Thread.WriteCreateThreadFolder(
-            current_file_directory, list_of_threads)
+            Thread.WriteCreateThreadFolder(current_file_name_path, list_of_threads, directory_of_git_folder)
 
             sublime.status_message(str(subprocess.Popen("git status", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()))
 
