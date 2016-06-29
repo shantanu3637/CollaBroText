@@ -42,12 +42,13 @@ class ViewChangedCommand(sublime_plugin.TextCommand):
 
 
         global data_struct, list_of_threads, current_editing_file
-
-        current_editing_file = self.view
-        try :
-            list_of_threads = data_struct[current_view_id]
-        except KeyError :
-            pass
+        if (self.view.file_name()!='/home/shantanu/.config/sublime-text-3/Packages/CollaBroText/comments.cbrt') or (self.view.file_name()!=None):
+            
+            current_editing_file = self.view
+            try :
+                list_of_threads = data_struct[current_view_id]
+            except KeyError :
+                pass
 
 
 
@@ -223,7 +224,7 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
 
         # Need to iterate through the full list due to the case when moving from one highlighted region to another`
         for thread_object in list_of_threads:
-            print("Current editing file: "+ str(current_editing_file))
+            print("Current editing file: "+ str(current_editing_file.id()))
             region_from_object = current_editing_file.get_regions(thread_object.thread_key)  # thread_key gives the UUID
             currently_selected_region = current_editing_file.sel()
             # print(current_editing_file.id())
@@ -269,7 +270,7 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
 # NEED TO FIX HIGHLIGHT AFTER CLOSING LAYOUT
 class HighlightChange(sublime_plugin.EventListener):
     def on_selection_modified(self, view):
-        print("View in on_selection_mod"+str(view)+" and id is "+str(view.id()))
+        # print("View in on_selection_mod"+str(view)+" and id is "+str(view.id()))
         window = sublime.active_window()
         window.run_command("highlight_and_display")
 
