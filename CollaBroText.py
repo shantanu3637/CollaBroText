@@ -31,9 +31,11 @@ data_struct = {}
 
 class ShiftView(sublime_plugin.EventListener):
     def on_activated(self,view):
-         if (self.view.file_name()!='/home/shantanu/.config/sublime-text-3/Packages/CollaBroText/comments.cbrt') or (self.view.file_name() is not None):
-            window = sublime.active_window()
-            window.run_command('view_changed')
+        print("View File name is : "+ str(view.file_name()))
+        if (view.file_name()!='/home/shantanu/.config/sublime-text-3/Packages/CollaBroText/comments.cbrt'):
+            if (view.file_name() is not None):
+                window = sublime.active_window()
+                window.run_command('view_changed')
 
             
 
@@ -44,12 +46,12 @@ class ViewChangedCommand(sublime_plugin.TextCommand):
 
         global data_struct, list_of_threads, current_editing_file
             
-            current_editing_file = self.view
-            print("Current editing file was set again . with view id "+str(current_editing_file.id()))
-            try :
-                list_of_threads = data_struct[current_view_id]
-            except KeyError :
-                pass
+        current_editing_file = self.view
+        print("Current editing file was set again . with view id "+str(current_editing_file.id()))
+        try :
+            list_of_threads = data_struct[current_view_id]
+        except KeyError :
+            pass
 
 
 
