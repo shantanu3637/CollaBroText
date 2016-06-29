@@ -31,8 +31,9 @@ data_struct = {}
 
 class ShiftView(sublime_plugin.EventListener):
     def on_activated(self,view):
-        window = sublime.active_window()
-        window.run_command('view_changed')
+         if (self.view.file_name()!='/home/shantanu/.config/sublime-text-3/Packages/CollaBroText/comments.cbrt') or (self.view.file_name() is not None):
+            window = sublime.active_window()
+            window.run_command('view_changed')
 
             
 
@@ -42,9 +43,9 @@ class ViewChangedCommand(sublime_plugin.TextCommand):
 
 
         global data_struct, list_of_threads, current_editing_file
-        if (self.view.file_name()!='/home/shantanu/.config/sublime-text-3/Packages/CollaBroText/comments.cbrt') or (self.view.file_name() is not None):
             
             current_editing_file = self.view
+            print("Current editing file was set again . with view id "+str(current_editing_file.id()))
             try :
                 list_of_threads = data_struct[current_view_id]
             except KeyError :
@@ -229,9 +230,6 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
             currently_selected_region = current_editing_file.sel()
             # print(current_editing_file.id())
             # print(view.id())
-            print("Thread object key : "+ str(thread_object.thread_key))
-            print("region from object : "+ str(region_from_object[0]))
-            print("currenty selected region : "+str(currently_selected_region[0]))
             if region_from_object[0].contains(currently_selected_region[0]):
                 thread_index = list_of_threads.index(thread_object)
                 current_editing_file.add_regions(
