@@ -42,7 +42,7 @@ class ViewChangedCommand(sublime_plugin.TextCommand):
 
 
         global data_struct, list_of_threads, current_editing_file
-        if (self.view.file_name()!='/home/shantanu/.config/sublime-text-3/Packages/CollaBroText/comments.cbrt') or (self.view.file_name()!=None):
+        if (self.view.file_name()!='/home/shantanu/.config/sublime-text-3/Packages/CollaBroText/comments.cbrt') or (self.view.file_name()!="None"):
             
             current_editing_file = self.view
             try :
