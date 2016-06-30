@@ -168,6 +168,9 @@ class Thread:
 		print ("This is thread path " + thread_path) 
 		
 
+
+
+		# This erased commments of other files
 		# if os.path.exists(thread_path):
 		# 	shutil.rmtree(thread_path)
 		# 	os.makedirs(thread_path)
@@ -271,9 +274,34 @@ class Thread:
 
 
 
-def read_multiple_files(pcurrent_file_directory): #reading from multiple files directly into sublime DS
+def read_multiple_files(pcurrent_file_directory, pProject_directory): #reading from multiple files directly into sublime DS
 
-		for root, dirs, files in os.walk(pcurrent_file_directory + '/' + 'Comments'):
+
+	
+		# for root, dirs, files in os.walk(pcurrent_file_directory + '/' + 'Comments'):
+		# 	local_list_of_comments = []
+		# 	for name in files:
+
+		# 		if (name !=  '1.txt'):
+		# 			with open(os.path.join(root,name), 'r') as fl:
+		# 				content = fl.readlines()
+		# 				c = Comment(str(content[2])[0:-1],str(content[1])[0:-1],str(content[0])[0:-1],str(content[3])[0:])
+		# 				local_list_of_comments.append(c)
+
+		# 	for name in files:
+		# 		if (name == '1.txt'):
+		# 			with open(os.path.join(root,name), 'r') as fl:
+		# 				content = fl.readlines()
+		# 				reg = str(content[0])[1:-2]
+		# 				t = Thread( (sublime.Region(int(list(reg.split(','))[0]),int(list(reg.split(','))[1]))), thread_key = str(content[1])[0:-1],  comment_string = None, list_of_comments = local_list_of_comments, is_resolved = str(content[2])[0:])
+		# 				t.add_thread(list_of_threads)
+		# return list_of_threads
+
+
+
+		filevariable  = pcurrent_file_directory.split('/')[-1]
+		thread_path = pProject_directory + "/Project_Comments" +  ((pcurrent_file_directory.split(pProject_directory)[1]).split("/"+filevariable)[0])
+		for root, dirs, files in os.walk(thread_path):
 			local_list_of_comments = []
 			for name in files:
 
@@ -291,7 +319,6 @@ def read_multiple_files(pcurrent_file_directory): #reading from multiple files d
 						t = Thread( (sublime.Region(int(list(reg.split(','))[0]),int(list(reg.split(','))[1]))), thread_key = str(content[1])[0:-1],  comment_string = None, list_of_comments = local_list_of_comments, is_resolved = str(content[2])[0:])
 						t.add_thread(list_of_threads)
 		return list_of_threads
-
 
 
 
