@@ -314,14 +314,13 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
                 split_timestamp = comment.timestamp.split(' ')
                 split_only_date = split_timestamp[0].split('-')
                 if(split_timestamp[0] == str(date.today())):
-                    timeperiod = split_only_date[1] + "-" + split_only_date[2] + "-" + split_only_date[0]
-                    #timeperiod = "Today "
+                    timeperiod = "Today "
                 elif(split_timestamp[0] == str(date.today() - timedelta(days=1))):
                     timeperiod = "Yesterday "
                 elif(split_only_date[0] == str(date.today().year)):
-                    timeperiod = split_only_date[1] + "-" + split_only_date[2] + "-" + split_only_date[3]
+                    timeperiod = split_only_date[1] + "-" + split_only_date[2]
                 else :
-                    timeperiod = split_only_date[1] + "-" + split_only_date[2] + "-" + split_only_date[3]
+                    timeperiod = split_only_date[1] + "-" + split_only_date[2] + "-" + split_only_date[0]
                 
                 fl.write("\n\n" + timeperiod)
                 fl.write("\n@" + comment.username + "\t" + split_timestamp[1])
@@ -386,15 +385,14 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
 
                 pProject_directory = "/home/shantanu/Documents/TestingGit"  #get project directory
                 pcurrent_file_directory = "/home/shantanu/Documents/TestingGit/FINAL INTEGRATION TESTING/clocksync.py"
-
-                print("This is current file directory from plugin " + pcurrent_file_directory)
-                filevariable  =  pcurrent_file_directory.split('/')[-1]      
-                check_comments_path = pProject_directory + "/Project_Comments" +  ((pcurrent_file_directory.split(pProject_directory)[1]).split("/"+filevariable)[0]) + "/" +filevariable.split(".")[0] + 'Comments'
+                
+                filevariable  =  current_file_name_path.split('/')[-1]      
+                check_comments_path = pProject_directory + "/Project_Comments" +  ((current_file_name_path.split(pProject_directory)[1]).split("/"+filevariable)[0]) + "/" +filevariable.split(".")[0] + 'Comments'
                 print("This is check_comments_path"+ check_comments_path)
 
                 #check_comments_path = current_file_directory + "/Comments"
                 if os.path.exists(check_comments_path):  # check if Comments folder exists
-                    list_of_threads = read_multiple_files(pcurrent_file_directory)
+                    list_of_threads = read_multiple_files(current_file_name_path)
                     data_struct[current_editing_file.id()] = list_of_threads
                     print(list_of_threads)
                     # templist = Thread.read_thread()
