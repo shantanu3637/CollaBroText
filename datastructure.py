@@ -274,7 +274,7 @@ class Thread:
 
 
 
-def read_multiple_files(pcurrent_file_directory, pProject_directory): #reading from multiple files directly into sublime DS
+def read_multiple_files(pcurrent_file_directory): #reading from multiple files directly into sublime DS
 
 
 	
@@ -298,7 +298,7 @@ def read_multiple_files(pcurrent_file_directory, pProject_directory): #reading f
 		# return list_of_threads
 
 
-
+		pProject_directory = "/home/shantanu/Documents/TestingGit"
 		filevariable  = pcurrent_file_directory.split('/')[-1]
 		thread_path = pProject_directory + "/Project_Comments" +  ((pcurrent_file_directory.split(pProject_directory)[1]).split("/"+filevariable)[0])
 		for root, dirs, files in os.walk(thread_path):
