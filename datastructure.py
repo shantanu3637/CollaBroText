@@ -170,6 +170,9 @@ class Thread:
 			if not os.path.exists(thread_path2):
 			 	os.makedirs(thread_path2)
 
+
+			print("Outside if")
+
 			with open(thread_path2 + '/' + '1' + '.txt', 'w') as fl:
 				fl.write( str(x.region) +"\n" + x.thread_key + "\n" + str(x.is_resolved))
 			for y in x.list_of_comments:
