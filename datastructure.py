@@ -103,14 +103,47 @@ class Thread:
 
 
 
-		for dirpath, dirnames, filenames in os.walk (str(pProject_directory)): 
-			if not os.path.exists(os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):])):
-				os.mkdir (os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):]))
+		# for dirpath, dirnames, filenames in os.walk (str(pProject_directory)): 
+		# 	if not os.path.exists(os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):])):
+		# 		if not(os.path.exists(pProject_directory+"/Project_Comments")):
+		# 		os.mkdir (os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):]))
+
+
+
 		# print(pProject_directory)
 		# for dirpath, dirnames, filenames in os.walk ('/home/shantanu/Documents/TestingGit'): 
 		# 	os.mkdir (os.path.join ('/home/shantanu/Documents/TestingGit' + '/Project_Comments', dirpath[1+len ('/home/shantanu/Documents/TestingGit'):]))
 
 		
+
+		for dirpath, dirnames, filenames in os.walk (str(pProject_directory)):
+			print("This is dirpath"+dirpath)
+			print("This is dirnames"+dirnames)
+			print("This is filenames"+filenames)
+
+			dirnames[:] = [d for d in dirnames if d not in ["Project_Comments"]] 
+
+
+			print("This is dirpath"+dirpath)
+			print("This is dirnames"+dirnames)
+			print("This is filenames"+filenames)
+
+			if not os.path.exists(os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):])):
+				os.mkdir (os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):]))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		print("This is Project directory path" + pProject_directory)
 		print("This is current file directory path" + pcurrent_file_directory)
