@@ -394,7 +394,7 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
                 #check_comments_path = current_file_directory + "/Comments"
                 if os.path.exists(check_comments_path):  # check if Comments folder exists
                     list_of_threads = read_multiple_files(pcurrent_file_directory)
-
+                    print(list_of_threads)
                     # templist = Thread.read_thread()
                     # list_of_threads = Thread.converting_from_file_to_new_list_of_threads(templist)
             else:
