@@ -135,9 +135,9 @@ class Thread:
 		print ("This is thread path " + thread_path) 
 		
 
-		# if os.path.exists(thread_path):
-		# 	shutil.rmtree(thread_path)
-		# 	os.makedirs(thread_path)
+		if os.path.exists(thread_path):
+			shutil.rmtree(thread_path)
+			os.makedirs(thread_path)
 
 		for x in plist_of_threads:
 			# Shantanu while redoing, check this line to see if it is needed.
@@ -172,6 +172,7 @@ class Thread:
 
 
 			print("Outside if")
+			print(plist_of_threads)
 
 			with open(thread_path2 + '/' + '1' + '.txt', 'w') as fl:
 				fl.write( str(x.region) +"\n" + x.thread_key + "\n" + str(x.is_resolved))
