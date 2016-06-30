@@ -380,7 +380,15 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
             if check_for_git_repo == "true\n":
                 print ("In a valid Git repo")
                 run_plugin = True
-                check_comments_path = current_file_directory + "/Comments"
+
+
+
+                pProject_directory = "/home/shantanu/Documents/TestingGit"  #get project directory
+                filevariable  = current_file_directory.split('/')[-1]      
+                check_comments_path = pProject_directory + "/Project_Comments" +  ((current_file_directory.split(pProject_directory)[1]).split("/"+filevariable)[0]) + "/" +filevariable.split(".")[0] + 'Comments'
+                
+
+                #check_comments_path = current_file_directory + "/Comments"
                 if os.path.exists(check_comments_path):  # check if Comments folder exists
                     list_of_threads = read_multiple_files(current_file_directory)
 
