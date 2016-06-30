@@ -173,6 +173,8 @@ class Thread:
 
 			print("Outside if")
 			print(plist_of_threads)
+			print(plist_of_threads[0].thread_key)
+			print(plist_of_threads[0].list_of_comments[0])
 
 			with open(thread_path2 + '/' + '1' + '.txt', 'w') as fl:
 				fl.write( str(x.region) +"\n" + x.thread_key + "\n" + str(x.is_resolved))
