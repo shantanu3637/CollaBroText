@@ -381,18 +381,19 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
                 print ("In a valid Git repo")
                 run_plugin = True
 
+                directory_of_git_folder = subprocess.Popen("git rev-parse --show-toplevel", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
+                pProject_directory = directory_of_git_folder[:-1]
 
+                # pProject_directory = "/home/shantanu/Documents/TestingGit"  #get project directory
+                # pcurrent_file_directory = "/home/shantanu/Documents/TestingGit/FINAL INTEGRATION TESTING/clocksync.py"
 
-                pProject_directory = "/home/shantanu/Documents/TestingGit"  #get project directory
-                pcurrent_file_directory = "/home/shantanu/Documents/TestingGit/FINAL INTEGRATION TESTING/clocksync.py"
-                
                 filevariable  =  current_file_name_path.split('/')[-1]      
                 check_comments_path = pProject_directory + "/Project_Comments" +  ((current_file_name_path.split(pProject_directory)[1]).split("/"+filevariable)[0]) + "/" +filevariable.split(".")[0] + 'Comments'
                 print("This is check_comments_path"+ check_comments_path)
 
                 #check_comments_path = current_file_directory + "/Comments"
                 if os.path.exists(check_comments_path):  # check if Comments folder exists
-                    list_of_threads = read_multiple_files(current_file_name_path)
+                    list_of_threads = read_multiple_files(current_file_name_path, pProject_directory)
                     data_struct[current_editing_file.id()] = list_of_threads
                     print(list_of_threads)
                     # templist = Thread.read_thread()
