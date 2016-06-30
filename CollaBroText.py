@@ -384,9 +384,10 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
 
 
                 pProject_directory = "/home/shantanu/Documents/TestingGit"  #get project directory
+                print("This is current file directory from plugin " + current_file_directory)
                 filevariable  = current_file_directory.split('/')[-1]      
                 check_comments_path = pProject_directory + "/Project_Comments" +  ((current_file_directory.split(pProject_directory)[1]).split("/"+filevariable)[0]) + "/" +filevariable.split(".")[0] + 'Comments'
-                
+                print("This is check_comments_path"+ check_comments_path)
 
                 #check_comments_path = current_file_directory + "/Comments"
                 if os.path.exists(check_comments_path):  # check if Comments folder exists
