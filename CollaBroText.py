@@ -443,7 +443,7 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
             pull_message = subprocess.Popen("git pull origin master", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
             sublime.status_message(str(pull_message))
             push_returned_message = subprocess.Popen("git push origin master", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
-            sublime.message_dialog("Pushed to Git")
+            sublime.status_message("Synced with Git")
 
     # def on_pre_close(self, view):
     #     global comment_view_obj
