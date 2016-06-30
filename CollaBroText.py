@@ -317,9 +317,10 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
                     timeperiod = "Today "
                 elif(split_timestamp[0] == str(date.today() - timedelta(days=1))):
                     timeperiod = "Yesterday "
-                else:
+                elif(split_only_date[0] == str(date.today().year)):
                     timeperiod = split_only_date[1] + "-" + split_only_date[2]
-
+                else :
+                    timeperiod = split_only_date[1] + "-" + split_only_date[2]+ "-" + split_only_date[3]
                 fl.write("\n\n" + timeperiod)
                 fl.write("\n@" + comment.username + "\t" + split_timestamp[1])
                 fl.write("\n" + comment.comment_string)
