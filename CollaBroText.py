@@ -414,6 +414,7 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
                 0:forward_slash_index]
 
             directory_of_git_folder = subprocess.Popen("git rev-parse --show-toplevel", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
+            directory_of_git_folder = directory_of_git_folder[:-1]
 
             Thread.WriteCreateThreadFolder(current_file_name_path, list_of_threads, directory_of_git_folder)
 

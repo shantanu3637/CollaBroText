@@ -103,15 +103,19 @@ class Thread:
 
 
 
-		# for dirpath, dirnames, filenames in os.walk (str(pProject_directory)): 
-		# 	os.mkdir (os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):]))
-
-		for dirpath, dirnames, filenames in os.walk ('/home/shantanu/Documents/TestingGit'): 
-			os.mkdir (os.path.join ('/home/shantanu/Documents/TestingGit') + '/Project_Comments', dirpath[1+len ('/home/shantanu/Documents/TestingGit'):])
+		for dirpath, dirnames, filenames in os.walk (str(pProject_directory)): 
+			os.mkdir (os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):]))
+		# print(pProject_directory)
+		# for dirpath, dirnames, filenames in os.walk ('/home/shantanu/Documents/TestingGit'): 
+		# 	os.mkdir (os.path.join ('/home/shantanu/Documents/TestingGit' + '/Project_Comments', dirpath[1+len ('/home/shantanu/Documents/TestingGit'):]))
 
 		
 
 		filevariable  = pcurrent_file_directory.split('/')[-1] 
+		print (filevariable)
+		#filevariable = pProject_directory + '/Project_Comments'
+
+
 
 
 		thread_path = pcurrent_file_directory + filevariable + 'Comments' #Checks if a Comments folder is present
