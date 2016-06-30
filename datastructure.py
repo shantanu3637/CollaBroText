@@ -300,7 +300,7 @@ def read_multiple_files(pcurrent_file_directory): #reading from multiple files d
 
 		pProject_directory = "/home/shantanu/Documents/TestingGit"
 		filevariable  = pcurrent_file_directory.split('/')[-1]
-		thread_path = pProject_directory + "/Project_Comments" +  ((pcurrent_file_directory.split(pProject_directory)[1]).split("/"+filevariable)[0]) + filevariable.split(".")[0] + 'Comments'
+		thread_path = pProject_directory + "/Project_Comments" +  ((pcurrent_file_directory.split(pProject_directory)[1]).split("/"+filevariable)[0]) + "/" + filevariable.split(".")[0] + 'Comments'
 		for root, dirs, files in os.walk(thread_path):
 			local_list_of_comments = []
 			for name in files:
