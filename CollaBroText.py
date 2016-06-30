@@ -51,7 +51,7 @@ class ViewChangedCommand(sublime_plugin.TextCommand):
         try :
             list_of_threads = data_struct[current_view_id]
         except KeyError :
-            pass
+            pass #does this need to be changed?
 
 
 
