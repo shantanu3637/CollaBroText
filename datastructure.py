@@ -117,19 +117,19 @@ class Thread:
 		
 
 		for dirpath, dirnames, filenames in os.walk (str(pProject_directory)):
-			print("This is dirpath"+dirpath)
-			print("This is dirnames"+dirnames)
-			print("This is filenames"+filenames)
-
-			dirnames[:] = [d for d in dirnames if d not in ["Project_Comments"]] 
 
 
-			print("This is dirpath"+dirpath)
-			print("This is dirnames"+dirnames)
-			print("This is filenames"+filenames)
+			#dirnames[:] = [d for d in dirnames if d not in Project_Comments] 
 
-			if not os.path.exists(os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):])):
-				os.mkdir (os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):]))
+
+			#print("This is dirpath"+str(dirpath))
+			#print(dirnames)
+			#print("This is filenames"+str(filenames))
+
+
+			if ("Project_Comments" not in dirpath):
+				if not os.path.exists(os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):])):
+					os.mkdir (os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):]))
 
 
 
@@ -168,9 +168,9 @@ class Thread:
 		print ("This is thread path " + thread_path) 
 		
 
-		if os.path.exists(thread_path):
-			shutil.rmtree(thread_path)
-			os.makedirs(thread_path)
+		# if os.path.exists(thread_path):
+		# 	shutil.rmtree(thread_path)
+		# 	os.makedirs(thread_path)
 
 		for x in plist_of_threads:
 			# Shantanu while redoing, check this line to see if it is needed.
