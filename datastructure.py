@@ -1,6 +1,6 @@
 
 
-import  sublime,sublime_plugin, json, uuid, subprocess, os
+import  sublime,sublime_plugin, json, uuid, subprocess, os, string
 from datetime import datetime
 import time
 
@@ -104,30 +104,45 @@ class Thread:
 
 
 		for dirpath, dirnames, filenames in os.walk (str(pProject_directory)): 
-			os.mkdir (os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):]))
+			if not os.path.exists(os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):])):
+				os.mkdir (os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory)):]))
 		# print(pProject_directory)
 		# for dirpath, dirnames, filenames in os.walk ('/home/shantanu/Documents/TestingGit'): 
 		# 	os.mkdir (os.path.join ('/home/shantanu/Documents/TestingGit' + '/Project_Comments', dirpath[1+len ('/home/shantanu/Documents/TestingGit'):]))
 
 		
 
+		print("This is Project directory path" + pProject_directory)
+		print("This is current file directory path" + pcurrent_file_directory)
+
+		testingvariable  =  pcurrent_file_directory
+
+		#testingvariable = string.replace(testingvariable, pProject_directory, "", 1)
+
+
+		print("This is testing variable" + testingvariable)
 		filevariable  = pcurrent_file_directory.split('/')[-1] 
-		print (filevariable)
+
+		print ("This is filevariable" + filevariable)
 		#filevariable = pProject_directory + '/Project_Comments'
 
 
 
 
-		thread_path = pcurrent_file_directory + filevariable + 'Comments' #Checks if a Comments folder is present
+		#thread_path = pcurrent_file_directory + filevariable + 'Comments' #Checks if a Comments folder is present
 
-		if os.path.exists(thread_path):
-			shutil.rmtree(thread_path)
-			os.makedirs(thread_path)
+		thread_path = pProject_directory + "/Project_Comments" +  ((pcurrent_file_directory.split(pProject_directory)[1]).split("/"+filevariable)[0])
+		print ("This is thread path " + thread_path) 
+		
+
+		# if os.path.exists(thread_path):
+		# 	shutil.rmtree(thread_path)
+		# 	os.makedirs(thread_path)
 
 		for x in plist_of_threads:
 			# Shantanu while redoing, check this line to see if it is needed.
 			
-			thread_path = pcurrent_file_directory + filevariable +  'Comments' #Checks if a Comments folder is present
+			#thread_path = pcurrent_file_directory + filevariable +  'Comments' #Checks if a Comments folder is present
 
 
 
@@ -137,7 +152,14 @@ class Thread:
 			# 	shutil.rmtree(thread_path)
 			# 	os.makedirs(thread_path)
 
-			thread_path = pcurrent_file_directory + filevariable + 'Comments' + '/' + str(x.thread_key) #Creates a folder for a thread
+
+
+
+			#thread_path = pcurrent_file_directory + filevariable + 'Comments' + '/' + str(x.thread_key) #Creates a folder for a thread
+
+
+			thread_path2 = thread_path+ "/" + filevariable.split(".")[0] + 'Comments' + '/' + str(x.thread_key)
+			print("This is 2 thread path " + thread_path2)
 
 			# if not os.path.exists(thread_path):
 			# 	os.makedirs(thread_path)
@@ -145,12 +167,13 @@ class Thread:
 			# 	shutil.rmtree(thread_path)
 			# 	os.makedirs(thread_path)
 
-			os.makedirs(thread_path)
+			if not os.path.exists(thread_path2):
+			 	os.makedirs(thread_path2)
 
-			with open(thread_path + '/' + '1' + '.txt', 'w') as fl:
+			with open(thread_path2 + '/' + '1' + '.txt', 'w') as fl:
 				fl.write( str(x.region) +"\n" + x.thread_key + "\n" + str(x.is_resolved))
 			for y in x.list_of_comments:
-				with open(thread_path + '/' + y.timestamp + '.txt', 'w') as fl:
+				with open(thread_path2 + '/' + y.timestamp + '.txt', 'w') as fl:
 					fl.write(y.username + '\n' + y.comment_key + '\n' + y.comment_string + "\n" +y.timestamp)
 
 
