@@ -31,7 +31,7 @@ data_struct = {}
 
 class ShiftView(sublime_plugin.EventListener):
     def on_activated(self,view):
-        print("View File name is : "+ str(view.file_name()))
+        # print("View File name is : "+ str(view.file_name()))
         if (view.file_name()!='/home/shantanu/.config/sublime-text-3/Packages/CollaBroText/comments.cbrt'):
             if (view.file_name() is not None):
                 window = sublime.active_window()
@@ -47,7 +47,7 @@ class ViewChangedCommand(sublime_plugin.TextCommand):
         global data_struct, list_of_threads, current_editing_file
             
         current_editing_file = self.view
-        print("Current editing file was set again . with view id "+str(current_editing_file.id()))
+        # print("Current editing file was set again . with view id "+str(current_editing_file.id()))
         try :
             list_of_threads = data_struct[current_view_id]
         except KeyError :
@@ -227,7 +227,6 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
 
         # Need to iterate through the full list due to the case when moving from one highlighted region to another`
         for thread_object in list_of_threads:
-            print("Current editing file: "+ str(current_editing_file.id()))
             region_from_object = current_editing_file.get_regions(thread_object.thread_key)  # thread_key gives the UUID
             currently_selected_region = current_editing_file.sel()
             # print(current_editing_file.id())

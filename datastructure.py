@@ -103,8 +103,8 @@ class Thread:
 
 
 
-		for dirpath, dirnames, filenames in os.walk (pProject_directory): 
-			os.mkdir (os.path.join (pProject_directory + '/Project_Comments', dirpath[1+len (pProject_directory):])) 
+		for dirpath, dirnames, filenames in os.walk (str(pProject_directory)): 
+			os.mkdir (os.path.join (str(pProject_directory) + '/Project_Comments', dirpath[1+len (str(pProject_directory):])) 
 
 		
 
