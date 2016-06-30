@@ -384,14 +384,16 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
 
 
                 pProject_directory = "/home/shantanu/Documents/TestingGit"  #get project directory
-                print("This is current file directory from plugin " + current_file_directory)
-                filevariable  = current_file_directory.split('/')[-1]      
-                check_comments_path = pProject_directory + "/Project_Comments" +  ((current_file_directory.split(pProject_directory)[1]).split("/"+filevariable)[0]) + "/" +filevariable.split(".")[0] + 'Comments'
+                pcurrent_file_directory = "/home/shantanu/Documents/TestingGit/FINAL INTEGRATION TESTING/clocksync.py"
+
+                print("This is current file directory from plugin " + pcurrent_file_directory)
+                filevariable  =  pcurrent_file_directory.split('/')[-1]      
+                check_comments_path = pProject_directory + "/Project_Comments" +  ((pcurrent_file_directory.split(pProject_directory)[1]).split("/"+filevariable)[0]) + "/" +filevariable.split(".")[0] + 'Comments'
                 print("This is check_comments_path"+ check_comments_path)
 
                 #check_comments_path = current_file_directory + "/Comments"
                 if os.path.exists(check_comments_path):  # check if Comments folder exists
-                    list_of_threads = read_multiple_files(current_file_directory)
+                    list_of_threads = read_multiple_files(pcurrent_file_directory)
 
                     # templist = Thread.read_thread()
                     # list_of_threads = Thread.converting_from_file_to_new_list_of_threads(templist)
