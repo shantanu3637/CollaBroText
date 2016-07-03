@@ -435,16 +435,16 @@ class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
             sublime.status_message(str(subprocess.Popen("git status", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()))
 
 
-            subprocess.Popen("git add --all", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
+            subprocess.Popen("git add --all", cwd=directory_of_git_folder, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
             sublime.status_message("Git add is done")
 
-            sublime.status_message(str(subprocess.Popen("git status", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()))
+            sublime.status_message(str(subprocess.Popen("git status", cwd=directory_of_git_folder, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()))
 
-            commit_message = subprocess.Popen("git commit -m\"commit to git staging area\"", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
+            commit_message = subprocess.Popen("git commit -m\"Collabrotext Commit\"", cwd=directory_of_git_folder, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
             sublime.status_message(str(commit_message))
-            pull_message = subprocess.Popen("git pull origin master", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
+            pull_message = subprocess.Popen("git pull origin master", cwd=directory_of_git_folder, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
             sublime.status_message(str(pull_message))
-            push_returned_message = subprocess.Popen("git push origin master", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
+            push_returned_message = subprocess.Popen("git push origin master", cwd=directory_of_git_folder, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
             sublime.status_message("Synced with Git")
 
     # def on_pre_close(self, view):
