@@ -397,7 +397,7 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
                 if os.path.exists(check_comments_path):  # check if Comments folder exists
                     list_of_threads = read_multiple_files(current_file_name_path, pProject_directory)
                     data_struct[current_editing_file.id()] = list_of_threads
-                    print(data_struct.keys())
+                    print("keys from data_struct after updating" + str(data_struct.keys()))
                     # templist = Thread.read_thread()
                     # list_of_threads = Thread.converting_from_file_to_new_list_of_threads(templist)
             else:
