@@ -358,7 +358,6 @@ class CloseLayoutCommand(sublime_plugin.WindowCommand):
 
 class InitialCheckOnLoad(sublime_plugin.EventListener):
     def on_load_async(self, view):
-        global list_of_threads
         global run_plugin
         global current_editing_file, data_struct
 
