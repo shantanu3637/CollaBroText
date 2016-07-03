@@ -111,11 +111,11 @@ class AddThreadCommentCommand(sublime_plugin.TextCommand):
         current_editing_file = self.view
         if(self.current_highlighted_region[0].a==self.current_highlighted_region[0].b):
             if (self.in_highlight == True):
-                self.view.window().show_input_panel("Enter your comment:", ' ', self.on_done, None, None)
+                self.view.window().show_input_panel("Enter your comment:", '', self.on_done, None, None)
             else:
                 sublime.message_dialog("You are trying to add a comment without selecting a region! Please select a region.")
         else:
-            self.view.window().show_input_panel("Enter your comment:", ' ', self.on_done, None, None)
+            self.view.window().show_input_panel("Enter your comment:", '', self.on_done, None, None)
 
 
     def add_new_thread(self, puser_input):
@@ -325,7 +325,7 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
                 
                 fl.write("\n\n" + timeperiod)
                 fl.write("\n@" + comment.username + "\t" + split_timestamp[1])
-                fl.write("\n" + comment.comment_string)
+                fl.write("\n" + ' ' +comment.comment_string)
 
         #print("current view" + str(self.view))
         comment_view_obj = window.open_file(package_directory + '/comments.cbrt')
