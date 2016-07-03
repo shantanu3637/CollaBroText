@@ -331,6 +331,7 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
         comment_view_obj = window.open_file(package_directory + '/comments.cbrt')
         #print("layout_view " + str(comment_view_obj))
 
+        comment_view_obj.set_read_only(True)
         #self.view.set_scratch(True)
         #self.view.set_read_only(True)
 
