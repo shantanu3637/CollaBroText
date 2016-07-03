@@ -410,7 +410,7 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
 
 
 class SyncingDataStrutureWithFile(sublime_plugin.EventListener):
-    def on_post_save(self, view):
+    def on_post_save_async(self, view):
         global list_of_threads
         global run_plugin
         for thread in list_of_threads:
