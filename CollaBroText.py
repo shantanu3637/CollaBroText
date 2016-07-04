@@ -33,7 +33,7 @@ data_struct = {}
 class ShiftView(sublime_plugin.EventListener):
     def on_activated(self,view):
         # print("View File name is : "+ str(view.file_name()))
-        if (view.file_name()!='/home/shantanu/.config/sublime-text-3/Packages/CollaBroText/comments.cbrt'):
+        if (view.file_name()!='/home/ssk/.config/sublime-text-3/Packages/CollaBroText/comments.cbrt'):
             if (view.file_name() is not None):
                 window = sublime.active_window()
                 window.run_command('view_changed')
