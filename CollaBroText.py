@@ -361,6 +361,8 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
         global run_plugin
         global current_editing_file, data_struct
 
+        list_of_threads = []
+
         file_directory = view.file_name()
         forward_slash_index_temp = file_directory.rfind('/', 0, len(file_directory))
         file_name = file_directory[forward_slash_index_temp + 1:len(file_directory)]
