@@ -308,7 +308,7 @@ def read_multiple_files(pcurrent_file_directory, pProject_directory): #reading f
 			for name in files:
 
 				if (name !=  '1.txt'):
-					print("root and file name" + str(root) + str(name))
+					#print("root and file name" + str(root) + str(name))
 					with open(os.path.join(root,name), 'r') as fl:
 						content = fl.readlines()
 						c = Comment(str(content[2])[0:-1],str(content[1])[0:-1],str(content[0])[0:-1],str(content[3])[0:])
