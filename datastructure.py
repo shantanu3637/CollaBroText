@@ -307,6 +307,7 @@ def read_multiple_files(pcurrent_file_directory, pProject_directory): #reading f
 			for name in files:
 
 				if (name !=  '1.txt'):
+					print("root and file name" + str(root) + str(name))
 					with open(os.path.join(root,name), 'r') as fl:
 						content = fl.readlines()
 						c = Comment(str(content[2])[0:-1],str(content[1])[0:-1],str(content[0])[0:-1],str(content[3])[0:])
@@ -319,6 +320,7 @@ def read_multiple_files(pcurrent_file_directory, pProject_directory): #reading f
 						reg = str(content[0])[1:-2]
 						t = Thread( (sublime.Region(int(list(reg.split(','))[0]),int(list(reg.split(','))[1]))), thread_key = str(content[1])[0:-1],  comment_string = None, list_of_comments = local_list_of_comments, is_resolved = str(content[2])[0:])
 						t.add_thread(list_of_threads)
+		print("list in datastruct" + str(list_of_threads))
 		return list_of_threads
 
 
