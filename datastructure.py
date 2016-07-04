@@ -321,7 +321,7 @@ def read_multiple_files(pcurrent_file_directory, pProject_directory): #reading f
 						reg = str(content[0])[1:-2]
 						t = Thread( (sublime.Region(int(list(reg.split(','))[0]),int(list(reg.split(','))[1]))), thread_key = str(content[1])[0:-1],  comment_string = None, list_of_comments = local_list_of_comments, is_resolved = str(content[2])[0:])
 						t.add_thread(local_list_of_threads)
-		print("list in datastruct" + str(local_list_of_threads))
+		#print("list in datastruct" + str(local_list_of_threads))
 		return local_list_of_threads
 
 
