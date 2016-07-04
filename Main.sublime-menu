@@ -27,7 +27,7 @@
                             {
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/CollaBroText/CollaBroText (Linux).sublime-settings",
+                                    "file": "${packages}/CollaBroText/collabro (Linux).sublime-settings",
                                     "platform": "Linux"
                                 },
                                 "caption": "Settings – Default"
@@ -42,7 +42,7 @@
                             },
                             {
                                 "command": "open_file",
-                                "args": {"file": "${packages}/User/CollaBroText.sublime-settings"},
+                                "args": {"file": "${packages}/User/collabro.sublime-settings"},
                                 "caption": "Settings – User"
                             },
                             { "caption": "-" },
