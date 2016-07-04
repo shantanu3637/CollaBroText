@@ -366,22 +366,22 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
         file_directory = view.file_name()
         forward_slash_index_temp = file_directory.rfind('/', 0, len(file_directory))
         file_name = file_directory[forward_slash_index_temp + 1:len(file_directory)]
-        print("file name " + file_name)
+        #print("file name " + file_name)
 
         if file_name != "comments.cbrt" :
             current_editing_file = view
-            print("current editing on load " + str(current_editing_file))
+            #print("current editing on load " + str(current_editing_file))
             current_file_name_path = view.file_name()
             forward_slash_index = current_file_name_path.rfind(
                 '/', 0, len(current_file_name_path))  # finds index of last forward slash
             # assigns the directory of the file to the variable
             # current_file_directory
             current_file_directory = current_file_name_path[0:forward_slash_index]
-            print ("path of file loaded is " + current_file_directory)
+            #print ("path of file loaded is " + current_file_directory)
             check_for_git_repo = subprocess.Popen("git rev-parse --is-inside-work-tree", cwd=current_file_directory,
                                                   universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
             if check_for_git_repo == "true\n":
-                print ("In a valid Git repo")
+                #print ("In a valid Git repo")
                 run_plugin = True
 
                 directory_of_git_folder = subprocess.Popen("git rev-parse --show-toplevel", cwd=current_file_directory, universal_newlines=True, shell=True, stdout=subprocess.PIPE).stdout.read()
@@ -392,7 +392,7 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
 
                 filevariable  =  current_file_name_path.split('/')[-1]      
                 check_comments_path = pProject_directory + "/Project_Comments" +  ((current_file_name_path.split(pProject_directory)[1]).split("/"+filevariable)[0]) + "/" +filevariable.split(".")[0] + 'Comments'
-                print("This is check_comments_path"+ check_comments_path)
+                #print("This is check_comments_path"+ check_comments_path)
 
                 #check_comments_path = current_file_directory + "/Comments"
                 if os.path.exists(check_comments_path):  # check if Comments folder exists
@@ -401,7 +401,7 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
                     # print(str(current_file_name_path))
                     # print(str(pProject_directory))
                     data_struct[current_editing_file.id()] = list_of_threads
-                    print("keys from data_struct after updating" + str(data_struct.keys()))
+                    #print("keys from data_struct after updating" + str(data_struct.keys()))
                     # templist = Thread.read_thread()
                     # list_of_threads = Thread.converting_from_file_to_new_list_of_threads(templist)
             else:

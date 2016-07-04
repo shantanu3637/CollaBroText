@@ -144,18 +144,18 @@ class Thread:
 
 
 
-		print("This is Project directory path" + pProject_directory)
-		print("This is current file directory path" + pcurrent_file_directory)
+		#print("This is Project directory path" + pProject_directory)
+		#print("This is current file directory path" + pcurrent_file_directory)
 
 		testingvariable  =  pcurrent_file_directory
 
 		#testingvariable = string.replace(testingvariable, pProject_directory, "", 1)
 
 
-		print("This is testing variable" + testingvariable)
+		#print("This is testing variable" + testingvariable)
 		filevariable  = pcurrent_file_directory.split('/')[-1] 
 
-		print ("This is filevariable" + filevariable)
+		#print ("This is filevariable" + filevariable)
 		#filevariable = pProject_directory + '/Project_Comments'
 
 
@@ -164,7 +164,7 @@ class Thread:
 		#thread_path = pcurrent_file_directory + filevariable + 'Comments' #Checks if a Comments folder is present
 
 		thread_path = pProject_directory + "/Project_Comments" +  ((pcurrent_file_directory.split(pProject_directory)[1]).split("/"+filevariable)[0])
-		print ("This is thread path " + thread_path) 
+		#print ("This is thread path " + thread_path) 
 		
 
 
@@ -194,7 +194,7 @@ class Thread:
 
 
 			thread_path2 = thread_path+ "/" + filevariable.split(".")[0] + 'Comments' + '/' + str(x.thread_key)
-			print("This is 2 thread path " + thread_path2)
+			#print("This is 2 thread path " + thread_path2)
 
 			# if not os.path.exists(thread_path):
 			# 	os.makedirs(thread_path)
@@ -206,10 +206,10 @@ class Thread:
 			 	os.makedirs(thread_path2)
 
 
-			print("Outside if")
-			print(plist_of_threads)
-			print(plist_of_threads[0].thread_key)
-			print(plist_of_threads[0].list_of_comments[0])
+			# print("Outside if")
+			# print(plist_of_threads)
+			# print(plist_of_threads[0].thread_key)
+			# print(plist_of_threads[0].list_of_comments[0])
 
 			with open(thread_path2 + '/' + '1' + '.txt', 'w') as fl:
 				fl.write( str(x.region) +"\n" + x.thread_key + "\n" + str(x.is_resolved))
@@ -302,7 +302,7 @@ def read_multiple_files(pcurrent_file_directory, pProject_directory): #reading f
 		thread_path = pProject_directory + "/Project_Comments" +  ((pcurrent_file_directory.split(pProject_directory)[1]).split("/"+filevariable)[0]) + "/" + filevariable.split(".")[0] + 'Comments'
 		local_list_of_threads = []
 
-		print("This is thread_path for read" + str(thread_path))
+		#print("This is thread_path for read" + str(thread_path))
 		for root, dirs, files in os.walk(thread_path):
 			local_list_of_comments = []
 			for name in files:
@@ -417,6 +417,6 @@ class WritetestCommand(sublime_plugin.TextCommand):
 		# yo = Thread.read_thread()
 		# new_list_of_threads = Thread.converting_from_file_to_new_list_of_threads(yo)
 
-		print(new_list_of_threads[0].list_of_comments[0].comment_string)
-		print(new_list_of_threads[0].list_of_comments[1].comment_string)
-		print(new_list_of_threads[0].list_of_comments[2].comment_string)
+		# print(new_list_of_threads[0].list_of_comments[0].comment_string)
+		# print(new_list_of_threads[0].list_of_comments[1].comment_string)
+		# print(new_list_of_threads[0].list_of_comments[2].comment_string)
