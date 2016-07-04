@@ -300,7 +300,8 @@ def read_multiple_files(pcurrent_file_directory, pProject_directory): #reading f
 		#pProject_directory = "/home/shantanu/Documents/TestingGit"
 		filevariable  = pcurrent_file_directory.split('/')[-1]
 		thread_path = pProject_directory + "/Project_Comments" +  ((pcurrent_file_directory.split(pProject_directory)[1]).split("/"+filevariable)[0]) + "/" + filevariable.split(".")[0] + 'Comments'
-		
+		local_list_of_threads = []
+
 		print("This is thread_path for read" + str(thread_path))
 		for root, dirs, files in os.walk(thread_path):
 			local_list_of_comments = []
@@ -319,7 +320,7 @@ def read_multiple_files(pcurrent_file_directory, pProject_directory): #reading f
 						content = fl.readlines()
 						reg = str(content[0])[1:-2]
 						t = Thread( (sublime.Region(int(list(reg.split(','))[0]),int(list(reg.split(','))[1]))), thread_key = str(content[1])[0:-1],  comment_string = None, list_of_comments = local_list_of_comments, is_resolved = str(content[2])[0:])
-						t.add_thread(list_of_threads)
+						t.add_thread(local_list_of_threads)
 		print("list in datastruct" + str(list_of_threads))
 		return list_of_threads
 
