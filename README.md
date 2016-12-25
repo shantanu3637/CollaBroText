@@ -47,4 +47,4 @@ To change theme
   
 These are the screen shots of the working plugin
 
-![](5.jpg?raw=true "start")
+![start](5.jpg?raw=true "start")
