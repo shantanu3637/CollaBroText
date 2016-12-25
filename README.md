@@ -45,3 +45,6 @@ To change theme
  ☐ Replace "notebook" to name of the theme you want and save. The theme of the comments tab will change. 
 
   
+These are the screen shots of the working plugin
+
+![](5.jpg?raw=true "start")
