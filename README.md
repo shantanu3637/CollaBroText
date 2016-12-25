@@ -47,4 +47,15 @@ To change theme
   
 These are the screen shots of the working plugin
 
+
+Start
 ![start](5.jpg?raw=true "start")
+
+Selection
+![start](4.jpg?raw=true "start")
+
+After command alt+d entering comment
+![start](3.jpg?raw=true "start")
+
+After highlight has been added how it will look
+![start](2.jpg?raw=true "start")
