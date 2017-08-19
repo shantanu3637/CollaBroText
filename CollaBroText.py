@@ -33,12 +33,9 @@ data_struct = {}
 class ShiftView(sublime_plugin.EventListener):
     def on_activated(self,view):
         # print("View File name is : "+ str(view.file_name()))
-        if (view.file_name()!='/home/ssk/.config/sublime-text-3/Packages/CollaBroText/comments.cbrt'):
-            if (view.file_name() is not None):
-                window = sublime.active_window()
-                window.run_command('view_changed')
-
-            
+        if (view.file_name() is not None):
+            window = sublime.active_window()
+            window.run_command('view_changed')
 
 class ViewChangedCommand(sublime_plugin.TextCommand):
     def run(self, view):
@@ -46,7 +43,7 @@ class ViewChangedCommand(sublime_plugin.TextCommand):
 
 
         global data_struct, list_of_threads, current_editing_file
-            
+
         current_editing_file = self.view
         # print("Current editing file was set again . with view id "+str(current_editing_file.id()))
         try :
@@ -218,7 +215,7 @@ class HighlightAndDisplayCommand(sublime_plugin.TextCommand):
             list_of_threads = data_struct[self.view.id()]
 
         # print(str(current_editing_file))
-        
+
         # current_editing_file = self.view
         # print(str(list_of_threads))
         #current_view_obj = current_editing_file
@@ -308,7 +305,7 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
         #     self.view.insert(edit, 0, "\n\n\n@" +
         #                      comment.username + "\t" + final_timestamp)
 
-        with open(package_directory + '/comments.cbrt', 'w') as fl :
+        with open(sublime.cache_path() + '/CollaBroText/comments.cbrt', 'w+') as fl :
 
             for comment in (com_list):
 
@@ -322,13 +319,13 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
                     timeperiod = split_only_date[1] + "-" + split_only_date[2]
                 else :
                     timeperiod = split_only_date[1] + "-" + split_only_date[2] + "-" + split_only_date[0]
-                
+
                 fl.write("\n\n" + timeperiod)
                 fl.write("\n@" + comment.username + "\t" + split_timestamp[1])
                 fl.write("\n" + ' ' +comment.comment_string)
 
         #print("current view" + str(self.view))
-        comment_view_obj = window.open_file(package_directory + '/comments.cbrt')
+        comment_view_obj = window.open_file(sublime.cache_path() + '/CollaBroText/comments.cbrt')
         #print("layout_view " + str(comment_view_obj))
 
         comment_view_obj.set_read_only(True)
@@ -390,7 +387,7 @@ class InitialCheckOnLoad(sublime_plugin.EventListener):
                 # pProject_directory = "/home/shantanu/Documents/TestingGit"  #get project directory
                 # pcurrent_file_directory = "/home/shantanu/Documents/TestingGit/FINAL INTEGRATION TESTING/clocksync.py"
 
-                filevariable  =  current_file_name_path.split('/')[-1]      
+                filevariable  =  current_file_name_path.split('/')[-1]
                 check_comments_path = pProject_directory + "/Project_Comments" +  ((current_file_name_path.split(pProject_directory)[1]).split("/"+filevariable)[0]) + "/" +filevariable.split(".")[0] + 'Comments'
                 #print("This is check_comments_path"+ check_comments_path)
 
