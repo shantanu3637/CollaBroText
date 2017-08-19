@@ -1,6 +1,3 @@
 {
 		"color_scheme": "Packages/CollaBroText/notebook.tmTheme",
-
-		//If you want the plugin to commit after some saves
-		"x_saves" : 5
 }
