@@ -30,6 +30,17 @@ data_struct = {}
 
 # Throttle class to run on selection modifier
 
+#trying to reload all files when sublime is opened
+def plugin_loaded():
+    current_window = sublime.active_window()
+    for view_object in current_window.views():
+        file_location = view_object.file_name()
+        current_window.focus_view(view_object)
+        current_window.run_command("close")
+        current_window.open_file(file_location)
+
+    current_window.focus_view(current_window.views()[0])
+
 class ShiftView(sublime_plugin.EventListener):
     def on_activated(self,view):
         # print("View File name is : "+ str(view.file_name()))
