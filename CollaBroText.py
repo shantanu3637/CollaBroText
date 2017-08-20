@@ -281,14 +281,21 @@ class HighlightChange(sublime_plugin.EventListener):
 class DisplayCommentsCommand(sublime_plugin.TextCommand):
     def run(self, edit, selected_thread_object):
 
-        global comment_view_obj, list_of_threads
+        global comment_view_obj, list_of_threads, location_of_cbrt
 
 
         # sublime.status_message("view id of UI is set here: "+str(comment_view_obj))
         current_thread = list_of_threads[selected_thread_object]
         sum_of_chars = 0
         com_list = current_thread.list_of_comments
-        package_directory = sublime.packages_path() + '/' + 'CollaBroText'
+        #package_directory = sublime.packages_path() + '/' + 'CollaBroText'
+
+        location_of_cbrt = sublime.cache_path() + '/CollaBroText'
+
+        #creates CollaBroText directory in cache_path() if it does not exist
+        if not os.path.exists(location_of_cbrt) :
+            os.makedirs(location_of_cbrt)
+
 
         # for comment in reversed(com_list):
         #     #self.view.insert(edit, 0, "comment")
@@ -305,7 +312,7 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
         #     self.view.insert(edit, 0, "\n\n\n@" +
         #                      comment.username + "\t" + final_timestamp)
 
-        with open(sublime.cache_path() + '/CollaBroText/comments.cbrt', 'w+') as fl :
+        with open(location_of_cbrt + '/comments.cbrt', 'w+') as fl :
 
             for comment in (com_list):
 
@@ -325,7 +332,7 @@ class DisplayCommentsCommand(sublime_plugin.TextCommand):
                 fl.write("\n" + ' ' +comment.comment_string)
 
         #print("current view" + str(self.view))
-        comment_view_obj = window.open_file(sublime.cache_path() + '/CollaBroText/comments.cbrt')
+        comment_view_obj = window.open_file(location_of_cbrt + '/comments.cbrt')
         #print("layout_view " + str(comment_view_obj))
 
         comment_view_obj.set_read_only(True)
@@ -343,6 +350,11 @@ class CloseLayoutCommand(sublime_plugin.WindowCommand):
         global layout_region
         #layout_flag = False
         layout_region = "0"
+
+        global location_of_cbrt
+
+        #deletes the comments.cbrt temp file from cache_path()
+        os.remove(location_of_cbrt + '/comments.cbrt')
 
         self.window.focus_view(comment_view_obj)
         self.window.run_command("close")
