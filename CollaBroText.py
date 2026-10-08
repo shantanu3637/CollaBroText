@@ -39,7 +39,9 @@ def plugin_loaded():
         current_window.run_command("close")
         current_window.open_file(file_location)
 
-    current_window.focus_view(current_window.views()[0])
+    views = current_window.views()
+    if views:
+        current_window.focus_view(views[0])
 
 class ShiftView(sublime_plugin.EventListener):
     def on_activated(self,view):
